@@ -4,34 +4,6 @@
     padding: 0;
     font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Mengubah tampilan input dari kotak jadul menjadi rounded modern */
-.search-input {
-  width: 100%;
-  padding: 10px 20px;      /* Padding kiri-kanan lebih besar agar teks tidak mentok lengkungan */
-  font-size: 14px;
-  border: 1px solid #dcdcdc;
-  border-radius: 50px;     /* Ini kunci untuk membuat sudutnya melengkung sempurna (oval) */
-  outline: none;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease;
-}
-
-/* Efek sedikit bayangan dan perubahan warna border saat kolom diklik */
-.search-input:focus {
-  background-color: #ffffff;
-  border-color: #a0a0a0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Tambahkan ini di paling bawah CSS Anda */
-.header-search {
-  flex: 1;            /* Mengisi area kosong di tengah */
-  max-width: 450px;   /* Atur angka ini (misal 450px - 600px) untuk memanjangkan kolom */
-  width: 100%;
-  margin: 0 30px;     /* Memberi jarak aman agar tidak menempel ke teks logo dan tombol */
-}
-
 body {
     background-color: #ffffff;
     color: #1e293b;
@@ -66,34 +38,6 @@ header {
     font-weight: 700;
     margin: 0;
     color: #1e293b;
-}
-
-/* Tombol Add Story */
-.btn-add {
-    position: relative;
-    top: auto;
-    right: auto;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #000000;
-    padding: 6px 14px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.3s ease;
-}
-
-.btn-add:hover {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
 }
 
 /* Konten Utama & Grid Card */

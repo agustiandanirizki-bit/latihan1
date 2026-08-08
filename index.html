@@ -185,8 +185,8 @@
   .summary-item span:last-child { font-weight: 700; color: var(--ink); }
 
   .section-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.3px; }
-  .rice-options, .type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-  .option-card { flex: 1; position: relative; }
+  .rice-options, .type-selector { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .option-card { flex: 1; position: relative; min-width: 80px; }
   .option-card input { position: absolute; opacity: 0; }
   .option-label {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -233,30 +233,35 @@
     font-family: inherit; font-size: 14px; outline: none; background: #fff; transition: all 0.25s; 
   }
   .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(198,142,89,0.1); }
-  .file-upload {
-    width: 100%; padding: 28px; border-radius: var(--radius-md); border: 2px dashed var(--line); background: var(--bg);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-    cursor: pointer; transition: all 0.25s;
-  }
-  .file-upload:hover { border-color: var(--accent); background: var(--accent-soft); }
-  .file-upload input { display: none; }
-  .preview-img { width: 100px; height: 100px; object-fit: cover; border-radius: 16px; margin-top: 8px; display: none; box-shadow: var(--shadow); }
+  
   .btn-primary {
     width: 100%; padding: 16px; background: var(--ink); color: #fff; border: none;
     border-radius: 100px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 8px; transition: all 0.25s ease;
   }
   .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74,59,50,0.2); }
-  .btn-danger { background: #c0392b; margin-top: 12px; }
-  .menu-list-admin { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
-  .menu-item-admin { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .menu-item-admin:last-child { border-bottom: none; }
-  .admin-thumb { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; background: var(--accent-soft); }
-  .menu-item-info { flex: 1; font-weight: 700; font-family: 'Playfair Display', serif; font-size: 15px; }
-  .delete-btn { 
-    color: #c0392b; background: rgba(192,57,43,0.08); border: none; 
-    padding: 8px 14px; border-radius: 100px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; 
+  
+  /* Admin Menu List with Checkboxes */
+  .admin-menu-list { margin-top: 20px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
+  .admin-menu-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 8px;
+    cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
   }
-  .delete-btn:hover { background: #c0392b; color: #fff; }
+  .admin-menu-item:hover { background: #f0ebe4; }
+  .admin-menu-item.checked { border-color: var(--accent); background: var(--accent-soft); }
+  
+  .admin-checkbox {
+    width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--line);
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+    background: #fff; flex-shrink: 0;
+  }
+  .admin-menu-item.checked .admin-checkbox { background: var(--accent); border-color: var(--accent); }
+  .admin-checkbox svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; fill: none; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
+  .admin-menu-item.checked .admin-checkbox svg { opacity: 1; transform: scale(1); }
+  
+  .admin-menu-name { font-weight: 700; font-size: 14px; color: var(--ink); flex: 1; }
+  .admin-menu-cat { font-size: 10px; color: var(--ink-light); background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 100px; }
+
   .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-light); }
   .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
 </style>
@@ -276,15 +281,15 @@
 
   <div class="screens" id="mainScreen">
     <div class="banner">
-      <span class="banner-tag">✨ Menu Spesial Hari Ini</span>
+      <span class="banner-tag">✨ Menu Ready Hari Ini</span>
       <h2>Selamat Datang di<br/>Kantin Rahayu</h2>
       <p>Nikmati cita rasa masakan rumah yang autentik, hangat, dan penuh cinta.</p>
     </div>
     <div id="menuContainer"></div>
     <div id="emptyState" class="empty-state" style="display:none;">
       <div class="empty-icon">🍽️</div>
-      <h3>Belum Ada Menu</h3>
-      <p>Menu hari ini sedang disiapkan dengan cinta.</p>
+      <h3>Belum Ada Menu Ready</h3>
+      <p>Admin sedang menyiapkan menu hari ini. Silakan cek lagi nanti ya!</p>
     </div>
   </div>
 
@@ -310,7 +315,7 @@
       <div class="rice-options">
         <label class="option-card">
           <input type="radio" name="ricePortion" value="1 Porsi" checked>
-          <div class="option-label">1 Porsi Normal</div>
+          <div class="option-label">1 Porsi</div>
         </label>
         <label class="option-card">
           <input type="radio" name="ricePortion" value="1/2 Porsi">
@@ -360,6 +365,8 @@
         <h3 class="modal-title">Panel Admin</h3>
         <button class="close-modal" onclick="closeAdmin()">×</button>
       </div>
+      
+      <!-- Login Step -->
       <div id="loginStep">
         <div class="input-group">
           <label class="section-label">Password</label>
@@ -367,96 +374,139 @@
         </div>
         <button class="btn-primary" onclick="checkLogin()">Masuk Dashboard</button>
       </div>
+
+      <!-- Dashboard Step -->
       <div id="dashboardStep" style="display:none;">
-        <div class="input-group">
-          <label class="section-label">Nama Menu Baru</label>
-          <input type="text" id="newItemName" class="input-field" placeholder="Contoh: Nila Goreng">
-        </div>
-        <div class="input-group">
-          <label class="section-label">Foto Makanan</label>
-          <label class="file-upload" id="uploadLabel">
-            <span id="uploadText" style="font-weight:700;font-size:13px;color:var(--ink-light);">+ Upload Foto</span>
-            <input type="file" id="newItemImage" accept="image/*" onchange="previewImage(this)">
-            <img id="imgPreview" class="preview-img" alt="Preview">
-          </label>
-        </div>
-        <button class="btn-primary" onclick="addMenuItem()">Tambahkan Menu</button>
+        <p style="font-size:13px; color:var(--ink-light); margin-bottom:16px; line-height:1.5;">
+          Centang menu yang <strong>READY</strong> hari ini, lalu klik simpan. Menu yang tidak dicentang akan disembunyikan dari pelanggan.
+        </p>
         
-        <div class="menu-list-admin">
-          <label class="section-label">Daftar Menu Aktif</label>
-          <div id="adminList"></div>
-          <button class="btn-primary btn-danger" onclick="clearAllMenu()">Reset Semua Menu</button>
-        </div>
+        <div class="admin-menu-list" id="adminMenuList"></div>
+        
+        <button class="btn-primary" onclick="saveDailyMenu()" style="margin-top:20px;">💾 Simpan Menu Hari Ini</button>
+        <button class="btn-primary" onclick="logoutAdmin()" style="background:transparent; color:var(--ink-light); margin-top:8px; box-shadow:none;">Keluar</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  const DEFAULT_MENU = [
-    { id: 1, name: "Nasi Goreng Kampung", image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=200&q=80" },
-    { id: 2, name: "Ayam Bakar Madu", image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=200&q=80" },
-    { id: 3, name: "Sayur Lodeh", image: "https://images.unsplash.com/photo-1547592166-23acbe3a624b?auto=format&fit=crop&w=200&q=80" }
+  // ==========================================
+  // MASTER MENU DATA (Semua menu kantin)
+  // ==========================================
+  const MASTER_MENU = [
+    "Ikan Nila Goreng", "Ikan Mas Goreng", "Ikan Deles Goreng", "Ikan Kembung Goreng", "Ikan Kembung Balado",
+    "Cobek Ikan Nila", "Pepes Ikan Nila", "Pepes Ikan Mas", "Pepes Tahu", "Ikan Lele Goreng",
+    "Ikan Salem Goreng", "Ikan Sarden Goreng", "Cumi Balado", "Tumis Asin Cumi", "Asin Peda Bumbu Sambal",
+    "Tumis Kangkung", "Tumis Tahu Toge", "Sayur Sop Ayam", "Sayur Bayam", "Opor Ayam",
+    "Sayur Daging Sapi Cincang", "Sop Iga Sapi", "Rendang Sapi", "Ayam Goreng Dadakan", "Pepes Ayam",
+    "Tumis Genjer", "Orek Tempe", "Gorengan Tahu", "Gorengan Tempe", "Gorengan Bakwan Udang",
+    "Bala-Bala", "Kepala Kakap", "Kentang Balado", "Capcay", "Tumis Kacang Panjang",
+    "Tumis Bunga Pepaya Udang Rebon", "Tumis Kikil Kulit", "Sop Kaki Sapi", "Lotek", "Teri Balado",
+    "Tumis Asin Cucut", "Jengkol Goreng", "Balado Jengkol"
   ];
 
-  let menuData = JSON.parse(localStorage.getItem('rahayu_menu_v2')) || DEFAULT_MENU;
+  // Generate placeholder image based on name
+  function getMenuImage(name) {
+    const encoded = encodeURIComponent(name);
+    return `https://placehold.co/200x200/F2E6D8/9E6B3A?text=${encoded}&font=playfair`;
+  }
+
+  // Load saved daily menu or default to empty
+  let dailyMenuIds = JSON.parse(localStorage.getItem('rahayu_daily_menu')) || [];
   let cart = {}; 
   let orderType = "Makan di Tempat";
   let useSambal = false;
+  let tempDailySelection = [];
 
-  function init() { renderMenu(); updateCartUI(); }
+  function init() { renderCustomerMenu(); updateCartUI(); }
 
-  function renderMenu() {
+  // ==========================================
+  // CUSTOMER VIEW
+  // ==========================================
+  function getActiveMenu() {
+    return dailyMenuIds.map((id, index) => ({
+      id: id,
+      name: MASTER_MENU[id],
+      image: getMenuImage(MASTER_MENU[id])
+    }));
+  }
+
+  function renderCustomerMenu() {
     const container = document.getElementById('menuContainer');
     const emptyState = document.getElementById('emptyState');
-    if (menuData.length === 0) { container.style.display = 'none'; emptyState.style.display = 'block'; return; }
-    container.style.display = 'block'; emptyState.style.display = 'none';
-    let html = `<div class="menu-section-title"><span>Daftar Menu</span><span>${menuData.length} Item</span></div><div class="menu-grid">`;
-    menuData.forEach(item => {
+    const activeMenu = getActiveMenu();
+    
+    if (activeMenu.length === 0) { 
+      container.style.display = 'none'; 
+      emptyState.style.display = 'block'; 
+      return; 
+    }
+    
+    container.style.display = 'block'; 
+    emptyState.style.display = 'none';
+    
+    let html = `<div class="menu-section-title"><span>Menu Ready</span><span>${activeMenu.length} Item</span></div><div class="menu-grid">`;
+    
+    activeMenu.forEach(item => {
       const qty = cart[item.id] || 0;
       html += `
         <div class="card">
-          <div class="card-img"><img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/100/F2E6D8/C68E59?text=🍽️'"></div>
+          <div class="card-img"><img src="${item.image}" alt="${item.name}"></div>
           <div class="card-body"><div class="card-title">${item.name}</div></div>
           <div class="card-actions">
-            ${qty === 0 ? `<button class="add-btn" onclick="addToCart(${item.id})">Tambah</button>` : `
-              <div class="qty-ctrl active">
-                <button class="q-btn" onclick="updateQty(${item.id}, -1)">−</button>
-                <span class="q-val">${qty}</span>
-                <button class="q-btn" onclick="updateQty(${item.id}, 1)">+</button>
-              </div>`}
+            ${qty === 0 
+              ? `<button class="add-btn" onclick="addToCart(${item.id})">Tambah</button>` 
+              : `<div class="qty-ctrl active">
+                  <button class="q-btn" onclick="updateQty(${item.id}, -1)">−</button>
+                  <span class="q-val">${qty}</span>
+                  <button class="q-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                </div>`
+            }
           </div>
         </div>`;
     });
-    html += `</div>`; container.innerHTML = html;
+    
+    html += `</div>`;
+    container.innerHTML = html;
   }
 
-  function addToCart(id) { cart[id] = 1; renderMenu(); updateCartUI(); }
-  function updateQty(id, delta) { if (!cart[id]) cart[id] = 0; cart[id] += delta; if (cart[id] <= 0) delete cart[id]; renderMenu(); updateCartUI(); }
+  function addToCart(id) { cart[id] = 1; renderCustomerMenu(); updateCartUI(); }
+  
+  function updateQty(id, delta) { 
+    if (!cart[id]) cart[id] = 0; 
+    cart[id] += delta; 
+    if (cart[id] <= 0) delete cart[id]; 
+    renderCustomerMenu(); 
+    updateCartUI(); 
+  }
+  
   function updateCartUI() {
-    let count = 0; for (const qty of Object.values(cart)) count += qty;
+    let count = 0; 
+    for (const qty of Object.values(cart)) count += qty;
     document.getElementById('cartCount').innerText = `${count} Item`;
     document.getElementById('checkoutBtn').disabled = count === 0;
   }
 
-  // --- CHECKOUT LOGIC ---
+  // ==========================================
+  // CHECKOUT LOGIC
+  // ==========================================
   function openCheckout() {
     const modal = document.getElementById('checkoutModal');
     const summary = document.getElementById('checkoutSummary');
+    const activeMenu = getActiveMenu();
+    
     let html = '';
     for (const [id, qty] of Object.entries(cart)) {
-      const item = menuData.find(m => m.id == id);
+      const item = activeMenu.find(m => m.id == id);
       if (item) html += `<div class="summary-item"><span>${item.name}</span><span>x${qty}</span></div>`;
     }
     summary.innerHTML = html;
     
-    // Reset states
     document.querySelector('input[name="ricePortion"][value="1 Porsi"]').checked = true;
     document.querySelector('input[name="orderType"][value="Makan di Tempat"]').checked = true;
     orderType = "Makan di Tempat";
     document.getElementById('orderNotes').value = '';
-    
-    // Reset Sambal
     useSambal = false;
     document.getElementById('sambalToggle').classList.remove('active');
     
@@ -474,6 +524,7 @@
   function sendToWhatsapp() {
     const notes = document.getElementById('orderNotes').value.trim();
     const ricePortion = document.querySelector('input[name="ricePortion"]:checked').value;
+    const activeMenu = getActiveMenu();
     
     let msg = "*PESANAN KANTIN RAHAYU*\n\n";
     msg += `📋 *Tipe:* ${orderType}\n`;
@@ -482,7 +533,7 @@
     msg += `━━━━━━━━━━━━━━━━━\n`;
     
     for (const [id, qty] of Object.entries(cart)) {
-      const item = menuData.find(m => m.id == id);
+      const item = activeMenu.find(m => m.id == id);
       if (item) msg += `• ${item.name} (${qty}x)\n`;
     }
     
@@ -493,34 +544,72 @@
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
-  // --- ADMIN LOGIC ---
-  let tempImageBase64 = null;
-  function openAdmin() { document.getElementById('adminModal').classList.add('open'); document.getElementById('loginStep').style.display = 'block'; document.getElementById('dashboardStep').style.display = 'none'; document.getElementById('adminPass').value = ''; }
+  // ==========================================
+  // ADMIN LOGIC
+  // ==========================================
+  function openAdmin() { 
+    document.getElementById('adminModal').classList.add('open'); 
+    document.getElementById('loginStep').style.display = 'block'; 
+    document.getElementById('dashboardStep').style.display = 'none'; 
+    document.getElementById('adminPass').value = ''; 
+  }
+  
   function closeAdmin() { document.getElementById('adminModal').classList.remove('open'); }
-  function checkLogin() { if (document.getElementById('adminPass').value === "12345") { document.getElementById('loginStep').style.display = 'none'; document.getElementById('dashboardStep').style.display = 'block'; renderAdminList(); } else { alert("Password salah!"); } }
-  function previewImage(input) {
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function(e) { tempImageBase64 = e.target.result; const p = document.getElementById('imgPreview'); p.src = tempImageBase64; p.style.display = 'block'; document.getElementById('uploadText').innerText = "✓ Foto Terpilih"; document.getElementById('uploadText').style.color = "var(--accent-dark)"; }
-      reader.readAsDataURL(input.files[0]);
+  
+  function checkLogin() { 
+    if (document.getElementById('adminPass').value === "12345") { 
+      document.getElementById('loginStep').style.display = 'none'; 
+      document.getElementById('dashboardStep').style.display = 'block'; 
+      tempDailySelection = [...dailyMenuIds];
+      renderAdminMenuList(); 
+    } else { 
+      alert("Password salah!"); 
+    } 
+  }
+
+  function logoutAdmin() {
+    document.getElementById('dashboardStep').style.display = 'none';
+    document.getElementById('loginStep').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+  }
+
+  function renderAdminMenuList() {
+    const list = document.getElementById('adminMenuList');
+    list.innerHTML = MASTER_MENU.map((name, index) => {
+      const isChecked = tempDailySelection.includes(index);
+      return `
+        <div class="admin-menu-item ${isChecked ? 'checked' : ''}" onclick="toggleAdminMenu(${index})">
+          <div class="admin-checkbox">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="admin-menu-name">${name}</span>
+        </div>`;
+    }).join('');
+  }
+
+  function toggleAdminMenu(index) {
+    if (tempDailySelection.includes(index)) {
+      tempDailySelection = tempDailySelection.filter(i => i !== index);
+    } else {
+      tempDailySelection.push(index);
     }
+    renderAdminMenuList();
   }
-  function addMenuItem() {
-    const name = document.getElementById('newItemName').value.trim();
-    if (!name) { alert("Nama makanan harus diisi!"); return; }
-    if (!tempImageBase64) { alert("Foto makanan harus diupload!"); return; }
-    menuData.push({ id: Date.now(), name, image: tempImageBase64 }); saveData();
-    document.getElementById('newItemName').value = ''; document.getElementById('newItemImage').value = ''; document.getElementById('imgPreview').style.display = 'none'; document.getElementById('uploadText').innerText = "+ Upload Foto"; document.getElementById('uploadText').style.color = "var(--ink-light)"; tempImageBase64 = null;
-    renderAdminList(); renderMenu(); alert("Menu berhasil ditambahkan! ✨");
+
+  function saveDailyMenu() {
+    // Sort for consistency
+    tempDailySelection.sort((a, b) => a - b);
+    dailyMenuIds = [...tempDailySelection];
+    localStorage.setItem('rahayu_daily_menu', JSON.stringify(dailyMenuIds));
+    
+    // Clear cart since menu changed
+    cart = {};
+    renderCustomerMenu();
+    updateCartUI();
+    
+    alert(`✅ Berhasil! ${dailyMenuIds.length} menu ditampilkan ke pelanggan.`);
+    closeAdmin();
   }
-  function deleteItem(id) { if(confirm("Hapus menu ini?")) { menuData = menuData.filter(i => i.id !== id); saveData(); renderAdminList(); renderMenu(); } }
-  function clearAllMenu() { if(confirm("Yakin ingin menghapus SEMUA menu?")) { menuData = []; saveData(); renderAdminList(); renderMenu(); } }
-  function renderAdminList() {
-    const list = document.getElementById('adminList');
-    if (menuData.length === 0) { list.innerHTML = '<div style="padding:16px;color:var(--ink-light);text-align:center;font-style:italic;font-size:13px;">Tidak ada menu aktif</div>'; return; }
-    list.innerHTML = menuData.map(item => `<div class="menu-item-admin"><img src="${item.image}" class="admin-thumb" onerror="this.src='https://via.placeholder.com/48/F2E6D8/C68E59?text=🍽️'"><div class="menu-item-info">${item.name}</div><button class="delete-btn" onclick="deleteItem(${item.id})">Hapus</button></div>`).join('');
-  }
-  function saveData() { try { localStorage.setItem('rahayu_menu_v2', JSON.stringify(menuData)); } catch (e) { alert("Penyimpanan penuh! Coba hapus beberapa menu lama."); } }
 
   init();
 </script>

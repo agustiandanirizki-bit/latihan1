@@ -3,525 +3,739 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>Kantin Rahayu — Tablet</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.0/index.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/nunito-sans@5.0.0/index.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<title>Atara Space — Kedai Kopi</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css" />
 <style>
-  :root {
-    --bg: #F9F5F0; --surface: #FFFFFF; --ink: #4A3B32; --ink-light: #8C7B70;
-    --accent: #C68E59; --accent-soft: #F2E6D8; --accent-dark: #9E6B3A; --line: #EBE3DA;
-    --radius-sm: 12px; --radius-md: 20px; --radius-lg: 28px;
-    --shadow: 0 8px 24px -8px rgba(74, 59, 50, 0.12);
-    --shadow-hover: 0 12px 32px -8px rgba(74, 59, 50, 0.18);
+  :root{
+    --bg:#F9F7F4;
+    --surface:#FFFFFF;
+    --ink:#1A1612;
+    --ink-2:#3D3630;
+    --muted:#8C8278;
+    --line:#EAE6E1;
+    --accent:#8B5E3C;
+    --accent-light:#F5EDE6;
+    --accent-dark:#6B4528;
+    --shadow-sm:0 1px 2px rgba(26,22,18,.04),0 1px 3px rgba(26,22,18,.06);
+    --shadow-md:0 4px 12px rgba(26,22,18,.06),0 2px 4px rgba(26,22,18,.04);
+    --shadow-lg:0 24px 48px -12px rgba(26,22,18,.18);
+    --radius-sm:12px;
+    --radius-md:18px;
+    --radius-lg:24px;
+    --radius-xl:32px;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; height: 100%; }
-  body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--ink); display: flex; align-items: center; justify-content: center; -webkit-font-smoothing: antialiased; }
-  h1,h2,h3,.brand-name,.modal-title,.card-title { font-family: 'Playfair Display', serif; letter-spacing: -0.01em; }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 10% -10%,#F2EEE9 0%,transparent 60%),radial-gradient(900px 500px at 110% 10%,#EFEAE4 0%,transparent 55%),#ECE8E3;
+    color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+    -webkit-font-smoothing:antialiased;letter-spacing:-0.01em;
+  }
 
-  /* === TABLET STAGE === */
-  .stage {
-    width: 100%; max-width: 768px; height: 100vh; max-height: 1024px;
-    background: var(--bg); position: relative; overflow: hidden;
-    display: flex; flex-direction: column;
+  .stage{
+    width:100%;max-width:420px;aspect-ratio:9/19.5;max-height:calc(100vh - 48px);
+    background:var(--bg);border-radius:48px;overflow:hidden;position:relative;
+    box-shadow:0 0 0 1px rgba(0,0,0,.04),0 40px 80px -20px rgba(26,22,18,.25),0 20px 40px -10px rgba(26,22,18,.15);
   }
-  @media(min-width: 769px) {
-    .stage { height: 92vh; border-radius: 32px; box-shadow: 0 20px 60px -10px rgba(0,0,0,0.15); border: 8px solid #fff; }
+  .stage::before{content:"";position:absolute;inset:0;border-radius:48px;border:10px solid #1A1612;pointer-events:none;z-index:60;}
+  .stage::after{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:110px;height:30px;background:#1A1612;border-radius:20px;z-index:61;}
+
+  .app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;}
+
+  /* Marquee */
+  .marquee-container{height:36px;background:var(--ink);color:#fff;display:flex;align-items:center;overflow:hidden;flex-shrink:0;padding:0 20px;}
+  .marquee-content{display:inline-block;white-space:nowrap;animation:scrollText 25s linear infinite;font-size:13px;font-weight:500;letter-spacing:0.02em;opacity:0.9;}
+  @keyframes scrollText {0% { transform: translateX(-100%); }100% { transform: translateX(100%); }}
+
+  .screens{flex:1;overflow:hidden;position:relative}
+  .screen{
+    position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 20px 140px; 
+    opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .35s ease,transform .35s ease;scrollbar-width:none;
   }
+  .screen::-webkit-scrollbar{display:none}
+  .screen.active{opacity:1;transform:translateY(0);pointer-events:auto}
 
   /* Header */
-  .header { padding: 28px 32px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg); z-index: 10; }
-  .brand h1 { margin: 0; font-size: 28px; font-weight: 700; }
-  .brand p { margin: 4px 0 0; font-size: 13px; color: var(--ink-light); font-weight: 600; letter-spacing: 0.5px; }
-  .admin-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-light); box-shadow: var(--shadow); transition: all 0.3s ease; }
-  .admin-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); color: var(--accent); }
-
-  /* Screens */
-  .screens { flex: 1; overflow-y: auto; padding: 0 32px 130px; scroll-behavior: smooth; }
-  .screens::-webkit-scrollbar { width: 6px; }
-  .screens::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
-
-  /* Banner - Tablet Horizontal */
-  .banner {
-    background: linear-gradient(145deg, #FFFDF9 0%, var(--accent-soft) 100%);
-    border-radius: var(--radius-lg); padding: 32px 36px; margin-top: 8px;
-    position: relative; overflow: hidden; box-shadow: var(--shadow);
-    display: flex; flex-direction: column; justify-content: center; min-height: 140px;
+  .header{display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px}
+  .greet{display:flex;flex-direction:column;gap:2px}
+  .greet .small{font-size:13px;color:var(--muted);font-weight:500}
+  .greet .name{font-size:18px;font-weight:600;letter-spacing:-0.02em}
+  .head-actions{display:flex;gap:8px;align-items:center}
+  .icon-btn{
+    width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s ease,background .2s ease;position:relative;
   }
-  .banner::before { content:''; position:absolute; top:-30%; right:-5%; width:220px; height:220px; background:radial-gradient(circle,rgba(198,142,89,0.15) 0%,transparent 70%); pointer-events:none; }
-  .banner-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.8); color:var(--accent-dark); font-size:11px; font-weight:700; padding:6px 14px; border-radius:100px; margin-bottom:14px; text-transform:uppercase; letter-spacing:1px; width:fit-content; }
-  .banner h2 { margin:0; font-size: 30px; line-height:1.2; }
-  .banner p { margin:10px 0 0; font-size:15px; color:var(--ink-light); line-height:1.5; max-width: 480px; }
+  .icon-btn:hover{background:#F0ECE7}
+  .icon-btn:active{transform:scale(.95)}
+  .icon-btn svg{width:18px;height:18px;stroke:var(--ink-2);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .dot{position:absolute;top:10px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);}
 
-  /* Menu Grid - 2 COLUMNS for Tablet */
-  .menu-section-title { margin:32px 4px 16px; font-size:20px; font-weight:700; display:flex; justify-content:space-between; align-items:baseline; }
-  .menu-section-title span:last-child { font-size:13px; color:var(--ink-light); font-family:'Nunito Sans',sans-serif; font-weight:600; }
-  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-
-  .card { background:var(--surface); border-radius:var(--radius-md); padding:16px; display:flex; align-items:center; gap:16px; transition:all 0.3s cubic-bezier(0.25,0.8,0.25,1); box-shadow:0 2px 8px rgba(74,59,50,0.04); border:1px solid rgba(235,227,218,0.6); }
-  .card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--accent-soft); }
-  .card-img { width:76px; height:76px; border-radius:16px; flex-shrink:0; overflow:hidden; background:var(--accent-soft); }
-  .card-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease; }
-  .card:hover .card-img img { transform:scale(1.08); }
-  .card-body { flex:1; min-width:0; }
-  .card-title { font-size:16px; font-weight:700; margin-bottom:2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .add-btn { padding:10px 20px; background:var(--ink); color:#fff; border:none; border-radius:100px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s ease; white-space:nowrap; }
-  .add-btn:hover { background:var(--accent-dark); transform:scale(1.05); }
-  .qty-ctrl { display:none; align-items:center; gap:4px; background:var(--accent-soft); border-radius:100px; padding:4px; }
-  .qty-ctrl.active { display:flex; }
-  .q-btn { width:34px; height:34px; border-radius:50%; border:none; background:var(--surface); font-weight:700; cursor:pointer; font-size:16px; color:var(--ink); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.06); transition:all 0.2s; }
-  .q-btn:hover { background:var(--accent); color:#fff; }
-  .q-val { min-width:30px; text-align:center; font-weight:800; font-size:14px; }
-
-  /* Bottom Bar */
-  .bottom-bar { position:absolute; bottom:0; left:0; right:0; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); border-top:1px solid var(--line); padding:18px 32px 36px; z-index:50; display:flex; justify-content:space-between; align-items:center; gap:20px; border-radius:24px 24px 0 0; }
-  .total-info { display:flex; flex-direction:column; }
-  .total-label { font-size:12px; color:var(--ink-light); font-weight:600; }
-  .total-val { font-size:22px; font-weight:700; font-family:'Playfair Display',serif; }
-  .checkout-btn { flex:0 0 auto; min-width: 220px; background:var(--accent); color:#fff; border:none; padding:18px 32px; border-radius:100px; font-weight:700; font-size:15px; cursor:pointer; transition:all 0.3s ease; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 16px rgba(198,142,89,0.35); }
-  .checkout-btn:hover { background:var(--accent-dark); transform:translateY(-2px); }
-  .checkout-btn:disabled { background:var(--line); color:var(--ink-light); box-shadow:none; cursor:not-allowed; transform:none; }
-
-  /* Modals */
-  .modal-overlay { position:absolute; inset:0; background:rgba(74,59,50,0.3); z-index:100; display:none; align-items:flex-end; justify-content:center; backdrop-filter:blur(6px); }
-  .modal-overlay.open { display:flex; }
-  .checkout-modal, .admin-modal-content { background:var(--surface); width:100%; border-radius:32px 32px 0 0; padding:32px 32px 40px; animation:slideUp 0.35s cubic-bezier(0.16,1,0.3,1); max-height:90vh; overflow-y:auto; }
-  .admin-modal-content { border-radius:28px; margin:auto; max-width:92%; box-shadow:0 24px 64px rgba(0,0,0,0.2); }
-  @keyframes slideUp { from{transform:translateY(100%);opacity:0.5} to{transform:translateY(0);opacity:1} }
-
-  .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
-  .modal-title { font-size:24px; font-weight:700; margin:0; }
-  .close-modal { width:40px; height:40px; border-radius:50%; background:var(--bg); border:none; font-size:22px; color:var(--ink-light); cursor:pointer; display:flex; align-items:center; justify-content:center; }
-
-  /* === CHECKOUT 2-COLUMN LAYOUT FOR TABLET === */
-  .checkout-layout { display: flex; gap: 28px; }
-  .checkout-left { flex: 1; min-width: 0; }
-  .checkout-right { flex: 1; min-width: 0; }
-
-  @media(max-width: 600px) {
-    .checkout-layout { flex-direction: column; gap: 0; }
-    .menu-grid { grid-template-columns: 1fr; }
-    .banner h2 { font-size: 26px; }
-    .stage { max-width: 420px; }
-    .header { padding: 24px 24px 16px; }
-    .screens { padding: 0 20px 120px; }
-    .bottom-bar { padding: 16px 24px 32px; }
-    .checkout-btn { min-width: unset; flex: 1; }
+  /* Banner */
+  .banner{
+    background:linear-gradient(160deg,#3D3630 0%,#5A4A3C 55%,#6B4528 100%);border-radius:var(--radius-lg);padding:22px;color:#fff;
+    position:relative;overflow:hidden;box-shadow:var(--shadow-lg);
   }
+  .banner::before{content:"";position:absolute;top:-40%;right:-20%;width:280px;height:280px;background:radial-gradient(circle,rgba(139,94,60,.4) 0%,transparent 70%);pointer-events:none;}
+  .banner-label{font-size:12px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.04em;text-transform:uppercase;position:relative;z-index:1}
+  .banner-title{font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-top:8px;position:relative;z-index:1;line-height:1.2}
+  .banner-sub{font-size:13px;color:rgba(255,255,255,.65);margin-top:6px;position:relative;z-index:1;line-height:1.5}
+  .banner-badge{
+    display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:500;color:#D4B896;
+    background:rgba(212,184,150,.15);padding:5px 12px;border-radius:100px;position:relative;z-index:1;
+  }
+  .banner-badge svg{width:12px;height:12px;stroke:#D4B896;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-  .summary-list { margin-bottom:20px; background:var(--bg); border-radius:var(--radius-md); padding:18px; border:1px dashed var(--line); }
-  .summary-item { display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px; padding-bottom:8px; border-bottom:1px solid rgba(0,0,0,0.05); }
-  .summary-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-  .summary-item span:first-child { font-weight:600; }
-  .summary-item span:last-child { font-weight:800; color:var(--accent-dark); }
+  /* Quick actions */
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+  .qa{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 8px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .qa:hover{box-shadow:var(--shadow-sm)}
+  .qa:active{transform:scale(.97)}
+  .qa-ic{width:36px;height:36px;border-radius:12px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;}
+  .qa-ic svg{width:18px;height:18px;stroke:var(--accent);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .qa span{font-size:11px;font-weight:500;color:var(--ink-2);text-align:center;letter-spacing:-0.01em}
 
-  .section-label { display:block; font-size:12px; font-weight:700; margin-bottom:10px; letter-spacing:0.3px; }
-  .input-field { width:100%; padding:14px; border-radius:var(--radius-md); border:2px solid var(--line); font-family:inherit; font-size:14px; outline:none; background:#fff; transition:all 0.25s; margin-bottom:20px; }
-  .input-field:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(198,142,89,0.1); }
+  /* Section */
+  .section{margin-top:24px}
+  .sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px}
+  .sec-head h3{font-size:16px;font-weight:600;letter-spacing:-0.02em;margin:0}
+  .sec-head a{font-size:13px;color:var(--accent);font-weight:500;cursor:pointer;text-decoration:none}
 
-  .price-wrapper { position:relative; margin-bottom:20px; }
-  .price-prefix { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-weight:800; color:var(--accent-dark); font-size:14px; pointer-events:none; }
-  .price-input { padding-left:42px !important; font-weight:700; font-size:16px; letter-spacing:0.5px; }
+  /* Menu Grid */
+  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .menu-item{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .menu-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .menu-img{aspect-ratio:1/1;background:var(--accent-light);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .menu-img svg{width:48px;height:48px;stroke:var(--accent);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
+  .menu-info{padding:12px}
+  .menu-name{font-size:13px;font-weight:600;letter-spacing:-0.01em;color:var(--ink-2)}
+  .menu-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .menu-price{font-size:14px;font-weight:600;color:var(--accent);margin-top:6px}
 
-  .rice-options,.type-selector { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-  .option-card { flex:1; position:relative; min-width:80px; }
-  .option-card input { position:absolute; opacity:0; }
-  .option-label { display:flex; align-items:center; justify-content:center; gap:6px; padding:14px 12px; border-radius:var(--radius-md); background:var(--bg); text-align:center; font-size:13px; font-weight:700; color:var(--ink-light); cursor:pointer; transition:all 0.25s ease; border:2px solid transparent; }
-  .option-card input:checked+.option-label { background:var(--accent-soft); color:var(--accent-dark); border-color:var(--accent); }
+  /* --- INLINE QTY CONTROLS (FITUR BARU) --- */
+  .menu-action-area {
+    margin-top: 8px;
+    height: 32px;
+    position: relative;
+  }
+  .menu-add {
+    width: 100%; height: 100%;
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .menu-add:hover { background: var(--accent-dark); }
 
-  .notes-input { width:100%; padding:16px; border-radius:var(--radius-md); background:var(--bg); border:2px solid transparent; font-family:'Nunito Sans',sans-serif; font-size:14px; resize:none; height:80px; margin-bottom:20px; outline:none; transition:all 0.25s ease; }
-  .notes-input:focus { border-color:var(--accent); background:#fff; box-shadow:0 0 0 4px rgba(198,142,89,0.1); }
+  .qty-control {
+    display: none;
+    width: 100%; height: 100%;
+    align-items: center; justify-content: space-between;
+    background: var(--accent-light);
+    border-radius: 8px;
+    padding: 0 4px;
+    animation: fadeIn 0.2s ease;
+  }
+  .qty-control.active { display: flex; }
 
-  .toggle-row { display:flex; align-items:center; justify-content:space-between; background:var(--bg); padding:14px 18px; border-radius:var(--radius-md); margin-bottom:20px; cursor:pointer; transition:background 0.2s; border:2px solid transparent; }
-  .toggle-row.active { border-color:var(--accent); background:var(--accent-soft); }
-  .toggle-left { display:flex; align-items:center; gap:12px; }
-  .custom-check { width:24px; height:24px; border-radius:50%; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; transition:all 0.2s; background:#fff; }
-  .custom-check svg { width:14px; height:14px; stroke:#fff; stroke-width:3; fill:none; opacity:0; transform:scale(0.5); transition:all 0.2s; }
-  .toggle-row.active .custom-check { background:var(--accent); border-color:var(--accent); }
-  .toggle-row.active .custom-check svg { opacity:1; transform:scale(1); }
+  .qty-btn-sm {
+    width: 24px; height: 24px;
+    border-radius: 6px; border: none;
+    background: var(--surface); color: var(--accent);
+    font-size: 16px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .qty-btn-sm:active { transform: scale(0.9); }
+  .qty-btn-sm svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .qty-val-sm { font-size: 13px; font-weight: 700; color: var(--ink); min-width: 20px; text-align: center; }
 
-  /* Admin Tabs */
-  .admin-tabs { display:flex; gap:8px; margin-bottom:20px; }
-  .admin-tab { flex:1; padding:14px; border-radius:var(--radius-md); background:var(--bg); border:2px solid transparent; font-weight:700; font-size:14px; color:var(--ink-light); cursor:pointer; text-align:center; transition:all 0.25s; }
-  .admin-tab.active { background:var(--accent-soft); color:var(--accent-dark); border-color:var(--accent); }
-  .admin-panel { display:none; }
-  .admin-panel.active { display:block; }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  /* --------------------------------------- */
 
-  .btn-primary { width:100%; padding:16px; background:var(--ink); color:#fff; border:none; border-radius:100px; font-weight:700; font-size:14px; cursor:pointer; margin-top:8px; transition:all 0.25s ease; }
-  .btn-primary:hover { background:var(--accent-dark); transform:translateY(-2px); }
-  .btn-outline { width:100%; padding:14px; background:transparent; color:var(--accent-dark); border:2px solid var(--accent); border-radius:100px; font-weight:700; font-size:14px; cursor:pointer; margin-top:8px; transition:all 0.25s ease; }
-  .btn-outline:hover { background:var(--accent-soft); }
-  .btn-danger { background:#c0392b; margin-top:12px; }
-  .btn-danger:hover { background:#a93226; }
+  /* Favorites Card */
+  .fav-list { display: flex; flex-direction: column; gap: 14px; }
+  .fav-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 16px;
+    display: flex; align-items: center; gap: 16px; position: relative; overflow: hidden; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 2px 8px rgba(139, 94, 60, 0.04);
+  }
+  .fav-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 24px -8px rgba(139, 94, 60, 0.18); border-color: rgba(139, 94, 60, 0.3); }
+  .fav-card:active { transform: scale(0.98); transition-duration: 0.1s; }
+  .fav-img {
+    width: 72px; height: 72px; border-radius: 16px; background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; transition: transform 0.3s ease;
+  }
+  .fav-card:hover .fav-img { transform: rotate(-3deg) scale(1.05); }
+  .fav-img svg { width: 32px; height: 32px; stroke: var(--accent); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .fav-body { flex: 1; z-index: 1; min-width: 0; }
+  .fav-name { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .fav-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 6px; }
+  .fav-price { font-size: 14px; font-weight: 700; color: var(--accent); }
+  
+  /* Fav Action with Inline Qty */
+  .fav-action-area { width: 80px; flex-shrink: 0; z-index: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .fav-add-btn {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: all 0.2s ease;
+  }
+  .fav-add-btn svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 2.5; fill: none; }
+  .fav-add-btn:hover { transform: scale(1.1); background: var(--accent-dark); }
+  
+  .fav-qty-control {
+    display: none; width: 100%; align-items: center; justify-content: space-between;
+    background: var(--accent-light); border-radius: 20px; padding: 2px;
+  }
+  .fav-qty-control.active { display: flex; }
+  .fav-qty-btn {
+    width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--surface);
+    color: var(--accent); font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .fav-qty-val { font-size: 13px; font-weight: 700; color: var(--ink); min-width: 16px; text-align: center; }
 
-  .admin-menu-list { max-height:400px; overflow-y:auto; padding-right:4px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .admin-menu-item { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--bg); border-radius:var(--radius-sm); cursor:pointer; transition:all 0.2s; border:2px solid transparent; }
-  .admin-menu-item.checked { border-color:var(--accent); background:var(--accent-soft); }
-  .admin-checkbox { width:22px; height:22px; border-radius:6px; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; transition:all 0.2s; background:#fff; flex-shrink: 0; }
-  .admin-menu-item.checked .admin-checkbox { background:var(--accent); border-color:var(--accent); }
-  .admin-checkbox svg { width:14px; height:14px; stroke:#fff; stroke-width:3; fill:none; opacity:0; transform:scale(0.5); transition:all 0.2s; }
-  .admin-menu-item.checked .admin-checkbox svg { opacity:1; transform:scale(1); }
-  .admin-menu-name { font-weight:700; font-size:13px; flex:1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fav-badge {
+    position: absolute; top: 12px; right: 12px; background: #FFF8E1; color: #F57F17; font-size: 10px; font-weight: 700;
+    padding: 4px 8px; border-radius: 20px; z-index: 2; letter-spacing: 0.02em; display: flex; align-items: center; gap: 4px;
+    box-shadow: 0 2px 8px rgba(245, 127, 23, 0.15);
+  }
+  .fav-badge svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2.5; fill: none; }
 
-  .history-stats { display:flex; gap:12px; margin-bottom:16px; }
-  .stat-card { flex:1; background:var(--bg); border-radius:var(--radius-md); padding:18px; text-align:center; }
-  .stat-val { font-size:22px; font-weight:800; font-family:'Playfair Display',serif; color:var(--accent-dark); }
-  .stat-label { font-size:11px; color:var(--ink-light); font-weight:600; margin-top:4px; }
-  .history-list { max-height:320px; overflow-y:auto; }
-  .history-item { background:var(--bg); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; font-size:13px; }
-  .history-item-header { display:flex; justify-content:space-between; margin-bottom:4px; }
-  .history-item-name { font-weight:700; }
-  .history-item-price { font-weight:800; color:var(--accent-dark); }
-  .history-item-meta { font-size:11px; color:var(--ink-light); }
+  /* Cart Badge in Tab */
+  .tab { position: relative; }
+  .cart-badge {
+    position: absolute; top: 2px; right: calc(50% - 18px); min-width: 16px; height: 16px;
+    background: #D84315; color: #fff; font-size: 10px; font-weight: 700; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid var(--bg);
+    opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; z-index: 10;
+  }
+  .cart-badge.visible { opacity: 1; transform: scale(1); }
+  .cart-badge.pop { animation: badgePop 0.4s ease; }
+  @keyframes badgePop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
 
-  .empty-state { text-align:center; padding:80px 20px; color:var(--ink-light); }
-  .empty-icon { font-size:64px; margin-bottom:16px; opacity:0.5; }
+  /* Bottom nav */
+  .tabbar{
+    position:absolute;bottom:0;left:0;right:0;padding:10px 16px 70px; 
+    background:linear-gradient(180deg,rgba(249,247,244,0) 0%,rgba(249,247,244,.85) 30%,rgba(249,247,244,1) 60%);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:50;
+  }
+  .tabbar-inner{
+    display:flex;justify-content:space-around;align-items:center;background:var(--surface);
+    border:1px solid var(--line);border-radius:28px;padding:8px;box-shadow:var(--shadow-md);
+  }
+  .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;
+    border-radius:20px;cursor:pointer;transition:all .25s ease;color:var(--muted);
+  }
+  .tab svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:all .25s ease}
+  .tab span{font-size:10px;font-weight:500;letter-spacing:-0.01em}
+  .tab.active{background:var(--ink);color:#fff}
+  .tab.active svg{stroke:#fff}
+  .tab.active .cart-badge { border-color: var(--ink); }
 
-  #receiptCapture { background:#fff; padding:30px 24px; width:320px; font-family:'Nunito Sans',sans-serif; color:#333; position:fixed; left:-9999px; top:0; }
-  .r-header { text-align:center; margin-bottom:20px; border-bottom:2px dashed #ddd; padding-bottom:15px; }
-  .r-brand { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:#4A3B32; margin:0; }
-  .r-sub { font-size:11px; color:#888; margin-top:4px; }
-  .r-info { display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px; color:#666; }
-  .r-items { margin-bottom:15px; }
-  .r-item { display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px; }
-  .r-item-name { font-weight:600; flex:1; }
-  .r-item-qty { color:#888; margin:0 10px; }
-  .r-divider { border-top:1px dashed #ddd; margin:15px 0; }
-  .r-total { display:flex; justify-content:space-between; font-size:18px; font-weight:800; color:#4A3B32; margin-top:10px; font-family:'Playfair Display',serif; }
-  .r-notes { font-size:11px; color:#666; font-style:italic; margin-top:15px; background:#f9f9f9; padding:8px; border-radius:8px; }
-  .r-footer { text-align:center; font-size:11px; color:#aaa; margin-top:20px; border-top:2px dashed #ddd; padding-top:15px; }
+  /* Cart screen */
+  .cart-empty{text-align:center;padding:60px 20px}
+  .cart-empty svg{width:64px;height:64px;stroke:var(--muted);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;margin-bottom:16px}
+  .cart-empty .t{font-size:16px;font-weight:600;color:var(--ink-2)}
+  .cart-empty .s{font-size:13px;color:var(--muted);margin-top:4px}
+  .cart-list{display:flex;flex-direction:column;gap:8px}
+  .cart-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px;}
+  .cart-item-img{width:56px;height:56px;border-radius:12px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .cart-item-img svg{width:24px;height:24px;stroke:var(--accent);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .cart-item-body{flex:1;min-width:0}
+  .cart-item-name{font-size:14px;font-weight:500;color:var(--ink-2)}
+  .cart-item-price{font-size:13px;font-weight:600;color:var(--accent);margin-top:2px}
+  .cart-qty{display:flex;align-items:center;gap:8px;}
+  .qty-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-2);transition:background .2s ease;}
+  .qty-btn:hover{background:var(--accent-light)}
+  .qty-val{font-size:14px;font-weight:600;min-width:20px;text-align:center}
+  .cart-summary{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:16px;margin-top:16px;}
+  .cart-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+  .cart-row .l{font-size:13px;color:var(--muted)}
+  .cart-row .v{font-size:13px;font-weight:600;color:var(--ink-2)}
+  .cart-row.total{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+  .cart-row.total .l{font-size:15px;font-weight:600;color:var(--ink)}
+  .cart-row.total .v{font-size:18px;font-weight:600;color:var(--accent)}
+  .checkout-btn{
+    width:100%;background:var(--accent);color:#fff;border:none;border-radius:16px;padding:16px;font-size:15px;font-weight:600;
+    cursor:pointer;margin-top:16px;transition:transform .2s ease,background .2s ease;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .checkout-btn:hover{background:var(--accent-dark)}
+  .checkout-btn:active{transform:scale(.98)}
+  .checkout-btn svg{width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .notes-input{
+    width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;font-size:13px;
+    font-family:inherit;color:var(--ink-2);resize:none;margin-top:12px;outline:none;min-height:60px;
+  }
+  .notes-input:focus{border-color:var(--accent)}
+  .notes-input::placeholder{color:var(--muted)}
+
+  /* Profile */
+  .profile-head{display:flex;flex-direction:column;align-items:center;padding:10px 0 24px;text-align:center}
+  .profile-av{
+    width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:28px;letter-spacing:.02em;
+    box-shadow:0 8px 24px rgba(139,94,60,.3);margin-bottom:12px;
+  }
+  .profile-head .name{font-size:20px;font-weight:600;letter-spacing:-0.02em}
+  .profile-head .sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .menu-section{display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
+  .menu-link{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;transition:background .2s ease;}
+  .menu-link:hover{background:#FAF8F6}
+  .menu-link + .menu-link{border-top:1px solid var(--line)}
+  .menu-link-ic{width:36px;height:36px;border-radius:10px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .menu-link-ic svg{width:17px;height:17px;stroke:var(--accent);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .menu-link-body{flex:1}
+  .menu-link-body .t{font-size:14px;font-weight:500;letter-spacing:-0.01em}
+  .menu-link-body .s{font-size:12px;color:var(--muted);margin-top:1px}
+  .menu-link .arr{color:var(--muted)}
+  .menu-link .arr svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  @media(max-width:480px){
+    body{padding:0;background:var(--bg)}
+    .stage{max-width:100%;max-height:100vh;width:100%;height:100vh;aspect-ratio:unset;border-radius:0}
+    .stage::before,.stage::after{display:none}
+  }
 </style>
 </head>
 <body>
 <div class="stage">
-  <div class="header">
-    <div class="brand"><h1>Kantin Rahayu</h1><p>Masakan Rumah • Est. 2024</p></div>
-    <button class="admin-btn" onclick="openAdmin()" title="Admin Panel">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-    </button>
-  </div>
-
-  <div class="screens" id="mainScreen">
-    <div class="banner">
-      <span class="banner-tag">✨ Menu Ready Hari Ini</span>
-      <h2>Selamat Datang di Kantin Rahayu</h2>
-      <p>Nikmati cita rasa masakan rumah yang autentik, hangat, dan penuh cinta.</p>
+  <div class="app">
+    <div class="marquee-container">
+      <div class="marquee-content">☕ Selamat Datang di Nadia Space — Nikmati Kopi Terbaik & Suasana Nyaman — Buka Setiap Hari 08:00 - 22:00 — Diskon 15% untuk Member Baru! — Pesan Sekarang via WhatsApp • </div>
     </div>
-    <div id="menuContainer"></div>
-    <div id="emptyState" class="empty-state" style="display:none;">
-      <div class="empty-icon">🍽️</div>
-      <h3>Belum Ada Menu Ready</h3>
-      <p>Admin sedang menyiapkan menu hari ini.</p>
-    </div>
-  </div>
 
-  <div class="bottom-bar">
-    <div class="total-info"><span class="total-label">Total Pesanan</span><span class="total-val" id="cartCount">0 Item</span></div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Pesan Sekarang</button>
-  </div>
-
-  <!-- PAYMENT MODAL - 2 COLUMN -->
-  <div class="modal-overlay" id="checkoutModal">
-    <div class="checkout-modal">
-      <div class="modal-header"><h3 class="modal-title">Pembayaran & Konfirmasi</h3><button class="close-modal" onclick="closeCheckout()">×</button></div>
-      
-      <div class="checkout-layout">
-        <!-- LEFT: Summary -->
-        <div class="checkout-left">
-          <span class="section-label">🛒 Ringkasan Pesanan</span>
-          <div class="summary-list" id="checkoutSummary"></div>
-          
-          <span class="section-label">👤 Identitas Pemesan</span>
-          <input type="text" id="buyerName" class="input-field" placeholder="Nama Lengkap Pembeli...">
-          
-          <span class="section-label">💰 Total Harga (Diisi Kasir)</span>
-          <div class="price-wrapper">
-            <span class="price-prefix">Rp</span>
-            <input type="text" id="orderPrice" class="input-field price-input" placeholder="0" inputmode="numeric" oninput="formatRupiah(this)">
+    <div class="screens">
+      <!-- HOME -->
+      <section class="screen active" id="screen-home">
+        <div class="header">
+          <div class="greet"><span class="small">Selamat datang di</span><span class="name">Atara Space ☕</span></div>
+          <div class="head-actions">
+            <div class="icon-btn" title="Notifikasi"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><span class="dot"></span></div>
           </div>
         </div>
-
-        <!-- RIGHT: Options -->
-        <div class="checkout-right">
-          <span class="section-label">🍚 Porsi Nasi</span>
-          <div class="rice-options">
-            <label class="option-card"><input type="radio" name="ricePortion" value="1 Porsi" checked><div class="option-label">1 Porsi</div></label>
-            <label class="option-card"><input type="radio" name="ricePortion" value="1/2 Porsi"><div class="option-label">½ Porsi</div></label>
-            <label class="option-card"><input type="radio" name="ricePortion" value="Tanpa Nasi"><div class="option-label">Tanpa Nasi 🚫</div></label>
+        <div class="banner">
+          <div class="banner-label">Promo Hari Ini</div>
+          <div class="banner-title">Selamat Datang Nadia<br/>di Atara Space</div>
+          <div class="banner-sub">Setiap cangkir diseduh dengan penuh cinta dan biji kopi pilihan terbaik.</div>
+          <div class="banner-badge"><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>Diskon 15% untuk member baru</div>
+        </div>
+        <div class="quick">
+          <div class="qa" onclick="switchTab('menu')"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><span>Menu</span></div>
+          <div class="qa" onclick="switchTab('cart')"><div class="qa-ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><span>Pesanan</span></div>
+          <div class="qa" onclick="switchTab('favorites')"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span>Favorit</span></div>
+          <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span>Lokasi</span></div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3>Menu Populer</h3><a onclick="switchTab('menu')">Lihat Semua</a></div>
+          <div class="menu-grid">
+            <!-- Item 1 -->
+            <div class="menu-item" data-name="Espresso" data-price="18000">
+              <div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Espresso</div><div class="menu-desc">Kopi hitam pekat & kuat</div><div class="menu-price">Rp 18.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="menu-item" data-name="Cappuccino" data-price="25000">
+              <div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Cappuccino</div><div class="menu-desc">Espresso + susu berbusa</div><div class="menu-price">Rp 25.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="menu-item" data-name="Cafe Latte" data-price="27000">
+              <div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Cafe Latte</div><div class="menu-desc">Espresso + susu lembut</div><div class="menu-price">Rp 27.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="menu-item" data-name="Americano" data-price="22000">
+              <div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Americano</div><div class="menu-desc">Espresso + air panas</div><div class="menu-price">Rp 22.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <span class="section-label">🌶️ Pelengkap</span>
-          <div class="toggle-row" id="sambalToggle" onclick="toggleSambal()">
-            <div class="toggle-left"><span>🌶️</span><span style="font-weight:700;font-size:14px;">Pakai Sambal</span></div>
-            <div class="custom-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3>Spesial Atara</h3><a onclick="switchTab('menu')">Lihat Semua</a></div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Matcha Latte" data-price="30000">
+              <div class="menu-img" style="background:#E8F5E9"><svg viewBox="0 0 24 24" style="stroke:#4CAF50"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Matcha Latte</div><div class="menu-desc">Matcha premium + susu</div><div class="menu-price">Rp 30.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
+            <div class="menu-item" data-name="Chocolate Frappe" data-price="32000">
+              <div class="menu-img" style="background:#EFEBE9"><svg viewBox="0 0 24 24" style="stroke:#795548"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="menu-info">
+                <div class="menu-name">Choco Frappe</div><div class="menu-desc">Cokelat dingin creamy</div><div class="menu-price">Rp 32.000</div>
+                <div class="menu-action-area">
+                  <button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button>
+                  <div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <span class="section-label">📋 Tipe Pesanan</span>
-          <div class="type-selector">
-            <label class="option-card"><input type="radio" name="orderType" value="Makan di Tempat" checked onchange="updateOrderType(this)"><div class="option-label">Makan Di Sini 🍽️</div></label>
-            <label class="option-card"><input type="radio" name="orderType" value="Dibungkus" onchange="updateOrderType(this)"><div class="option-label">Dibungkus 🥡</div></label>
+      <!-- MENU -->
+      <section class="screen" id="screen-menu">
+        <div class="header"><div class="greet"><span class="small">Atara Space</span><span class="name">Daftar Menu</span></div></div>
+        <div class="section" style="margin-top:0">
+          <div class="sec-head"><h3>☕ Kopi</h3></div>
+          <div class="menu-grid">
+             <div class="menu-item" data-name="Espresso" data-price="18000"><div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Espresso</div><div class="menu-desc">Kopi hitam pekat</div><div class="menu-price">Rp 18.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+             <div class="menu-item" data-name="Americano" data-price="22000"><div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Americano</div><div class="menu-desc">Espresso + air panas</div><div class="menu-price">Rp 22.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+             <div class="menu-item" data-name="Cappuccino" data-price="25000"><div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Cappuccino</div><div class="menu-desc">Espresso + foam susu</div><div class="menu-price">Rp 25.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+             <div class="menu-item" data-name="Cafe Latte" data-price="27000"><div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Cafe Latte</div><div class="menu-desc">Espresso + susu steam</div><div class="menu-price">Rp 27.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+             <div class="menu-item" data-name="Mocha" data-price="28000"><div class="menu-img" style="background:#EFEBE9"><svg viewBox="0 0 24 24" style="stroke:#795548"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Mocha</div><div class="menu-desc">Espresso + cokelat + susu</div><div class="menu-price">Rp 28.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+             <div class="menu-item" data-name="Affogato" data-price="30000"><div class="menu-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Affogato</div><div class="menu-desc">Espresso + es krim vanilla</div><div class="menu-price">Rp 30.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
           </div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3> Non-Kopi</h3></div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Matcha Latte" data-price="30000"><div class="menu-img" style="background:#E8F5E9"><svg viewBox="0 0 24 24" style="stroke:#4CAF50"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Matcha Latte</div><div class="menu-desc">Matcha premium + susu</div><div class="menu-price">Rp 30.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="Taro Latte" data-price="28000"><div class="menu-img" style="background:#F3E5F5"><svg viewBox="0 0 24 24" style="stroke:#9C27B0"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Taro Latte</div><div class="menu-desc">Taro + susu creamy</div><div class="menu-price">Rp 28.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="Red Velvet" data-price="30000"><div class="menu-img" style="background:#FFEBEE"><svg viewBox="0 0 24 24" style="stroke:#E53935"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Red Velvet</div><div class="menu-desc">Red velvet + cream cheese</div><div class="menu-price">Rp 30.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="Lemon Tea" data-price="18000"><div class="menu-img" style="background:#FFFDE7"><svg viewBox="0 0 24 24" style="stroke:#F9A825"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div><div class="menu-info"><div class="menu-name">Lemon Tea</div><div class="menu-desc">Teh lemon segar</div><div class="menu-price">Rp 18.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3>🍰 Makanan</h3></div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Croissant" data-price="22000"><div class="menu-img" style="background:#FFF8E1"><svg viewBox="0 0 24 24" style="stroke:#FF8F00"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg></div><div class="menu-info"><div class="menu-name">Croissant</div><div class="menu-desc">Pastry renyah buttery</div><div class="menu-price">Rp 22.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="Sandwich" data-price="28000"><div class="menu-img" style="background:#FFF3E0"><svg viewBox="0 0 24 24" style="stroke:#E65100"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 12h18"/></svg></div><div class="menu-info"><div class="menu-name">Sandwich</div><div class="menu-desc">Roti panggang + isian</div><div class="menu-price">Rp 28.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="French Fries" data-price="20000"><div class="menu-img" style="background:#FFFDE7"><svg viewBox="0 0 24 24" style="stroke:#F9A825"><path d="M7 20V8h2v12M11 20V4h2v16M15 20V6h2v14"/></svg></div><div class="menu-info"><div class="menu-name">French Fries</div><div class="menu-desc">Kentang goreng crispy</div><div class="menu-price">Rp 20.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+            <div class="menu-item" data-name="Pasta Carbonara" data-price="35000"><div class="menu-img" style="background:#FFF8E1"><svg viewBox="0 0 24 24" style="stroke:#FF8F00"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div><div class="menu-info"><div class="menu-name">Pasta Carbonara</div><div class="menu-desc">Pasta creamy saus keju</div><div class="menu-price">Rp 35.000</div><div class="menu-action-area"><button class="menu-add" onclick="handleAddClick(this)">+ Tambah</button><div class="qty-control"><button class="qty-btn-sm" onclick="handleInlineQty(this, -1)"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span class="qty-val-sm">1</span><button class="qty-btn-sm" onclick="handleInlineQty(this, 1)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div></div>
+          </div>
+        </div>
+      </section>
 
-          <span class="section-label">📝 Catatan Tambahan</span>
-          <textarea class="notes-input" id="orderNotes" placeholder="Contoh: Tidak pakai sayur, extra sambal..."></textarea>
+      <!-- FAVORITES -->
+      <section class="screen" id="screen-favorites">
+        <div class="header"><div class="greet"><span class="small">Pilihan Terbaik</span><span class="name">Menu Favorit ❤️</span></div></div>
+        <div class="section" style="margin-top:0">
+          <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5">Rekomendasi menu terbaik dari barista kami yang paling sering dipesan minggu ini.</p>
+          <div class="fav-list">
+            <div class="fav-card" data-name="Signature Gula Aren" data-price="32000">
+              <div class="fav-badge"><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>BEST SELLER</div>
+              <div class="fav-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="fav-body"><div class="fav-name">Signature Gula Aren</div><div class="fav-desc">Espresso + susu segar + gula aren asli</div><div class="fav-price">Rp 32.000</div></div>
+              <div class="fav-action-area">
+                <button class="fav-add-btn" onclick="handleFavAddClick(this)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                <div class="fav-qty-control"><button class="fav-qty-btn" onclick="handleFavInlineQty(this, -1)">-</button><span class="fav-qty-val">1</span><button class="fav-qty-btn" onclick="handleFavInlineQty(this, 1)">+</button></div>
+              </div>
+            </div>
+            <div class="fav-card" data-name="Butterscotch Sea Salt" data-price="35000">
+              <div class="fav-badge"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>FAVORIT</div>
+              <div class="fav-img" style="background:#FFF8E1"><svg viewBox="0 0 24 24" style="stroke:#FF8F00"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="fav-body"><div class="fav-name">Butterscotch Sea Salt</div><div class="fav-desc">Manis gurih dengan topping sea salt</div><div class="fav-price">Rp 35.000</div></div>
+              <div class="fav-action-area">
+                <button class="fav-add-btn" onclick="handleFavAddClick(this)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                <div class="fav-qty-control"><button class="fav-qty-btn" onclick="handleFavInlineQty(this, -1)">-</button><span class="fav-qty-val">1</span><button class="fav-qty-btn" onclick="handleFavInlineQty(this, 1)">+</button></div>
+              </div>
+            </div>
+            <div class="fav-card" data-name="Croissant Almond" data-price="28000">
+              <div class="fav-img" style="background:#FFF3E0"><svg viewBox="0 0 24 24" style="stroke:#E65100"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg></div>
+              <div class="fav-body"><div class="fav-name">Croissant Almond</div><div class="fav-desc">Renyah di luar, lembut almond di dalam</div><div class="fav-price">Rp 28.000</div></div>
+              <div class="fav-action-area">
+                <button class="fav-add-btn" onclick="handleFavAddClick(this)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                <div class="fav-qty-control"><button class="fav-qty-btn" onclick="handleFavInlineQty(this, -1)">-</button><span class="fav-qty-val">1</span><button class="fav-qty-btn" onclick="handleFavInlineQty(this, 1)">+</button></div>
+              </div>
+            </div>
+             <div class="fav-card" data-name="Matcha Fusion" data-price="33000">
+              <div class="fav-img" style="background:#E8F5E9"><svg viewBox="0 0 24 24" style="stroke:#4CAF50"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+              <div class="fav-body"><div class="fav-name">Matcha Fusion</div><div class="fav-desc">Perpaduan matcha & espresso shot</div><div class="fav-price">Rp 33.000</div></div>
+              <div class="fav-action-area">
+                <button class="fav-add-btn" onclick="handleFavAddClick(this)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                <div class="fav-qty-control"><button class="fav-qty-btn" onclick="handleFavInlineQty(this, -1)">-</button><span class="fav-qty-val">1</span><button class="fav-qty-btn" onclick="handleFavInlineQty(this, 1)">+</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CART -->
+      <section class="screen" id="screen-cart">
+        <div class="header">
+          <div class="greet"><span class="small">Pesanan Anda</span><span class="name">Keranjang</span></div>
+          <div class="head-actions"><div class="icon-btn" onclick="clearCart()" title="Hapus semua"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14"/></svg></div></div>
+        </div>
+        <div id="cartContent">
+          <div class="cart-empty" id="cartEmpty">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <div class="t">Keranjang kosong</div><div class="s">Yuk pesan sesuatu dari menu kami!</div>
+          </div>
+          <div id="cartItems" style="display:none">
+            <div class="cart-list" id="cartList"></div>
+            <div class="cart-summary">
+              <div class="cart-row"><span class="l">Subtotal</span><span class="v" id="subtotal">Rp 0</span></div>
+              <div class="cart-row"><span class="l">Biaya layanan</span><span class="v">Rp 2.000</span></div>
+              <div class="cart-row total"><span class="l">Total</span><span class="v" id="totalPrice">Rp 0</span></div>
+            </div>
+            <textarea class="notes-input" id="orderNotes" placeholder="Catatan pesanan (opsional)... contoh: kurang manis, extra ice"></textarea>
+            <button class="checkout-btn" onclick="checkout()"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Pesan via WhatsApp</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="screen" id="screen-profile">
+        <div class="header"><div class="greet"><span class="small">Akun</span><span class="name">Profil</span></div></div>
+        <div class="profile-head"><div class="profile-av">AS</div><div class="name">Nadia Space</div><div class="sub">Kedai Kopi Premium</div></div>
+        <div class="sharia-badge" style="background:var(--accent-light);border-radius:var(--radius-md);padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:var(--accent);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><div class="t" style="font-size:13px;font-weight:600;color:var(--accent)">Jl. Raya Atara No. 88</div><div class="s" style="font-size:11px;color:var(--muted);margin-top:1px">Buka setiap hari 08:00 - 22:00</div></div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3>Informasi</h3></div>
+          <div class="menu-section">
+            <div class="menu-link"><div class="menu-link-ic"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="menu-link-body"><div class="t">Hubungi Kami</div><div class="s">0851-8991-4887</div></div><div class="arr"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="menu-link"><div class="menu-link-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="menu-link-body"><div class="t">Lokasi</div><div class="s">Lihat di Google Maps</div></div><div class="arr"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="menu-link"><div class="menu-link-ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="menu-link-body"><div class="t">Syarat & Ketentuan</div><div class="s">Kebijakan privasi</div></div><div class="arr"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sec-head"><h3>Tentang</h3></div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px">
+            <p style="font-size:13px;color:var(--muted);line-height:1.6;margin:0">Atara Space adalah kedai kopi modern yang menyajikan berbagai minuman kopi berkualitas tinggi dan makanan ringan dalam suasana yang nyaman dan estetik.</p>
+          </div>
+        </div>
+        <div style="height:20px"></div>
+      </section>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tabbar">
+      <div class="tabbar-inner">
+        <div class="tab active" data-screen="home" onclick="switchTab('home')">
+          <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          <span>Beranda</span>
+        </div>
+        <div class="tab" data-screen="menu" onclick="switchTab('menu')">
+          <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
+          <span>Menu</span>
+        </div>
+        <div class="tab" data-screen="cart" onclick="switchTab('cart')">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-badge" id="cartBadge">0</span>
+          <span>Keranjang</span>
+        </div>
+        <div class="tab" data-screen="profile" onclick="switchTab('profile')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>Profil</span>
         </div>
       </div>
-
-      <button class="checkout-btn" id="processBtn" onclick="processPayment()" style="width:100%;margin-top:8px;">🧾 Buat Struk & Kirim WA</button>
     </div>
   </div>
-
-  <!-- ADMIN MODAL -->
-  <div class="modal-overlay" id="adminModal" style="align-items:center;">
-    <div class="admin-modal-content">
-      <div class="modal-header"><h3 class="modal-title">Panel Admin</h3><button class="close-modal" onclick="closeAdmin()">×</button></div>
-      <div id="loginStep">
-        <div class="input-group"><label class="section-label">Password</label><input type="password" id="adminPass" class="input-field" placeholder="Masukkan password..."></div>
-        <button class="btn-primary" onclick="checkLogin()">Masuk Dashboard</button>
-      </div>
-      <div id="dashboardStep" style="display:none;">
-        <div class="admin-tabs">
-          <div class="admin-tab active" onclick="switchTab('menu')">📋 Menu</div>
-          <div class="admin-tab" onclick="switchTab('history')">📊 Riwayat & CSV</div>
-        </div>
-        <div id="tabMenu" class="admin-panel active">
-          <p style="font-size:13px;color:var(--ink-light);margin-bottom:16px;">Centang menu yang READY hari ini.</p>
-          <div class="admin-menu-list" id="adminMenuList"></div>
-          <button class="btn-primary" onclick="saveDailyMenu()" style="margin-top:20px;">💾 Simpan Menu Hari Ini</button>
-        </div>
-        <div id="tabHistory" class="admin-panel">
-          <div class="history-stats">
-            <div class="stat-card"><div class="stat-val" id="statCount">0</div><div class="stat-label">Transaksi Hari Ini</div></div>
-            <div class="stat-card"><div class="stat-val" id="statRevenue">Rp 0</div><div class="stat-label">Pendapatan Hari Ini</div></div>
-          </div>
-          <button class="btn-outline" onclick="downloadCSV()">📥 Download CSV Hari Ini</button>
-          <button class="btn-outline" onclick="downloadAllCSV()" style="margin-top:8px;font-size:12px;padding:12px;">📦 Download Semua Data</button>
-          <div style="margin-top:16px;"><label class="section-label">Riwayat Transaksi</label></div>
-          <div class="history-list" id="historyList"></div>
-          <button class="btn-primary btn-danger" onclick="clearHistory()">🗑️ Hapus Semua Riwayat</button>
-        </div>
-        <button class="btn-primary" onclick="logoutAdmin()" style="background:transparent;color:var(--ink-light);margin-top:16px;box-shadow:none;">Keluar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- HIDDEN RECEIPT TEMPLATE -->
-<div id="receiptCapture">
-  <div class="r-header"><h2 class="r-brand">Kantin Rahayu</h2><div class="r-sub">Masakan Rumah • Est. 2024</div></div>
-  <div class="r-info"><span id="rDate"></span><span id="rOrderId"></span></div>
-  <div class="r-info" style="margin-bottom:5px;"><span><strong>Pemesan:</strong></span><span id="rBuyer" style="font-weight:700;"></span></div>
-  <div class="r-info"><span><strong>Tipe:</strong> <span id="rType"></span></span><span><strong>Nasi:</strong> <span id="rRice"></span></span></div>
-  <div class="r-divider"></div>
-  <div class="r-items" id="rItems"></div>
-  <div class="r-divider"></div>
-  <div class="r-total"><span>TOTAL BAYAR</span><span id="rTotalPrice"></span></div>
-  <div id="rNotesBox" class="r-notes" style="display:none;">📝 <span id="rNotesText"></span></div>
-  <div class="r-footer">Terima kasih atas pesanan Anda!<br>Semoga harimu menyenangkan ❤️</div>
 </div>
 
 <script>
-const MASTER_MENU = [
-  "Ikan Nila Goreng","Ikan Mas Goreng","Ikan Deles Goreng","Ikan Kembung Goreng","Ikan Kembung Balado",
-  "Cobek Ikan Nila","Pepes Ikan Nila","Pepes Ikan Mas","Pepes Tahu","Ikan Lele Goreng",
-  "Ikan Salem Goreng","Ikan Sarden Goreng","Cumi Balado","Tumis Asin Cumi","Asin Peda Bumbu Sambal",
-  "Tumis Kangkung","Tumis Tahu Toge","Sayur Sop Ayam","Sayur Bayam","Opor Ayam",
-  "Sayur Daging Sapi Cincang","Sop Iga Sapi","Rendang Sapi","Ayam Goreng Dadakan","Pepes Ayam",
-  "Tumis Genjer","Orek Tempe","Gorengan Tahu","Gorengan Tempe","Gorengan Bakwan Udang",
-  "Bala-Bala","Kepala Kakap","Kentang Balado","Capcay","Tumis Kacang Panjang",
-  "Tumis Bunga Pepaya Udang Rebon","Tumis Kikil Kulit","Sop Kaki Sapi","Lotek","Teri Balado",
-  "Tumis Asin Cucut","Jengkol Goreng","Balado Jengkol"
-];
+  let cart = [];
 
-let dailyMenuIds = JSON.parse(localStorage.getItem('rahayu_daily_menu')) || [];
-let cart = {};
-let orderType = "Makan di Tempat";
-let useSambal = false;
-let tempDailySelection = [];
-
-function init() { renderCustomerMenu(); updateCartUI(); }
-function getMenuImage(n) { return `https://placehold.co/200x200/F2E6D8/9E6B3A?text=${encodeURIComponent(n)}&font=playfair`; }
-function getActiveMenu() { return dailyMenuIds.map(id => ({ id, name: MASTER_MENU[id], image: getMenuImage(MASTER_MENU[id]) })); }
-
-function renderCustomerMenu() {
-  const c = document.getElementById('menuContainer'), e = document.getElementById('emptyState'), m = getActiveMenu();
-  if (!m.length) { c.style.display='none'; e.style.display='block'; return; }
-  c.style.display='block'; e.style.display='none';
-  let h = `<div class="menu-section-title"><span>Menu Ready</span><span>${m.length} Item</span></div><div class="menu-grid">`;
-  m.forEach(item => {
-    const q = cart[item.id]||0;
-    h += `<div class="card"><div class="card-img"><img src="${item.image}" alt="${item.name}"></div><div class="card-body"><div class="card-title">${item.name}</div></div><div class="card-actions">${q===0?`<button class="add-btn" onclick="addToCart(${item.id})">Tambah</button>`:`<div class="qty-ctrl active"><button class="q-btn" onclick="updateQty(${item.id},-1)">−</button><span class="q-val">${q}</span><button class="q-btn" onclick="updateQty(${item.id},1)">+</button></div>`}</div></div>`;
-  });
-  c.innerHTML = h + '</div>';
-}
-function addToCart(id) { cart[id]=1; renderCustomerMenu(); updateCartUI(); }
-function updateQty(id,d) { if(!cart[id])cart[id]=0; cart[id]+=d; if(cart[id]<=0)delete cart[id]; renderCustomerMenu(); updateCartUI(); }
-function updateCartUI() {
-  const n=Object.values(cart).reduce((a,b)=>a+b,0);
-  document.getElementById('cartCount').innerText=`${n} Item`;
-  document.getElementById('checkoutBtn').disabled=n===0;
-}
-
-function formatRupiah(el) { let v=el.value.replace(/[^0-9]/g,''); if(v)v=parseInt(v).toLocaleString('id-ID'); el.value=v; }
-function getRawPrice() { const v=document.getElementById('orderPrice').value; return v?parseInt(v.replace(/\./g,'')):0; }
-function fmtRp(n) { return 'Rp '+n.toLocaleString('id-ID'); }
-
-function saveTransaction(data) {
-  let history = JSON.parse(localStorage.getItem('rahayu_history') || '[]');
-  history.unshift(data);
-  localStorage.setItem('rahayu_history', JSON.stringify(history));
-}
-function getTodayStr() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-
-function renderHistory() {
-  const history = JSON.parse(localStorage.getItem('rahayu_history') || '[]');
-  const today = getTodayStr();
-  const todayData = history.filter(h => h.date === today);
-  document.getElementById('statCount').innerText = todayData.length;
-  document.getElementById('statRevenue').innerText = fmtRp(todayData.reduce((s,h) => s + h.price, 0));
-  const list = document.getElementById('historyList');
-  if (!history.length) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-light);font-size:13px;">Belum ada transaksi</div>'; return; }
-  list.innerHTML = history.slice(0, 50).map(h => `
-    <div class="history-item">
-      <div class="history-item-header"><span class="history-item-name">${h.buyer}</span><span class="history-item-price">${fmtRp(h.price)}</span></div>
-      <div class="history-item-meta">${h.date} ${h.time} • ${h.orderId} • ${h.items}</div>
-    </div>`).join('');
-}
-
-function downloadCSV() {
-  const history = JSON.parse(localStorage.getItem('rahayu_history') || '[]');
-  const data = history.filter(h => h.date === getTodayStr());
-  if (!data.length) { alert("Belum ada transaksi hari ini."); return; }
-  exportCSV(data, `KantinRahayu_${getTodayStr()}.csv`);
-}
-function downloadAllCSV() {
-  const history = JSON.parse(localStorage.getItem('rahayu_history') || '[]');
-  if (!history.length) { alert("Belum ada data transaksi."); return; }
-  exportCSV(history, `KantinRahayu_Semua_Data.csv`);
-}
-function exportCSV(data, filename) {
-  const headers = ['Tanggal','Waktu','Order ID','Pembeli','Tipe','Nasi','Sambal','Menu','Harga','Catatan'];
-  const rows = data.map(h => [h.date,h.time,h.orderId,`"${h.buyer}"`,h.type,h.rice,h.sambal?'Ya':'Tidak',`"${h.items}"`,h.price,`"${h.notes||''}"`]);
-  const csv = '\uFEFF' + [headers.join(','), ...rows.map(r=>r.join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
-}
-function clearHistory() {
-  if (confirm("Yakin hapus SEMUA riwayat transaksi?")) { localStorage.removeItem('rahayu_history'); renderHistory(); alert("Riwayat berhasil dihapus."); }
-}
-
-function openCheckout() {
-  const modal = document.getElementById('checkoutModal');
-  const summary = document.getElementById('checkoutSummary');
-  const activeMenu = getActiveMenu();
-  let html = '';
-  for (const [id, qty] of Object.entries(cart)) {
-    const item = activeMenu.find(m => m.id == id);
-    if (item) html += `<div class="summary-item"><span>${item.name}</span><span>x${qty}</span></div>`;
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    const tabBtn = document.querySelector(`.tab[data-screen="${name}"]`);
+    if(tabBtn) tabBtn.classList.add('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screenEl = document.getElementById('screen-' + name);
+    if(screenEl) { screenEl.classList.add('active'); screenEl.scrollTop = 0; }
   }
-  summary.innerHTML = html;
-  modal.classList.add('open');
-  document.querySelector('input[name="ricePortion"][value="1 Porsi"]').checked = true;
-  document.querySelector('input[name="orderType"][value="Makan di Tempat"]').checked = true;
-  orderType = "Makan di Tempat";
-  document.getElementById('orderNotes').value = '';
-  document.getElementById('buyerName').value = '';
-  document.getElementById('orderPrice').value = '';
-  useSambal = false;
-  document.getElementById('sambalToggle').classList.remove('active');
-}
-function closeCheckout() { document.getElementById('checkoutModal').classList.remove('open'); }
-function updateOrderType(r) { orderType = r.value; }
-function toggleSambal() { useSambal=!useSambal; document.getElementById('sambalToggle').classList.toggle('active',useSambal); }
 
-async function processPayment() {
-  const buyerName = document.getElementById('buyerName').value.trim();
-  const rawPrice = getRawPrice();
-  if (!buyerName) { alert("Mohon isi nama pembeli!"); return; }
-  if (rawPrice <= 0) { alert("Mohon isi total harga!"); return; }
-  const btn = document.getElementById('processBtn');
-  const orig = btn.innerText;
-  btn.innerText = "⏳ Membuat Struk..."; btn.disabled = true;
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
-  const timeStr = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  const orderId = 'KR-'+Math.floor(Math.random()*10000);
-  const ricePortion = document.querySelector('input[name="ricePortion"]:checked').value;
-  const notes = document.getElementById('orderNotes').value.trim();
-  const activeMenu = getActiveMenu();
-  const formattedPrice = fmtRp(rawPrice);
-  let itemNames = [], itemsHtml = '';
-  let msgText = `*STRUK PESANAN KANTIN RAHAYU*\n${orderId}\n\n👤 *Nama:* ${buyerName}\n📋 *Tipe:* ${orderType}\n🍚 *Nasi:* ${ricePortion}\n🌶️ *Sambal:* ${useSambal?'Ya':'Tidak'}\n━━━━━━━━━━━━━━━━━\n`;
-  for (const [id, qty] of Object.entries(cart)) {
-    const item = activeMenu.find(m => m.id == id);
-    if (item) {
-      itemNames.push(`${item.name} x${qty}`);
-      itemsHtml += `<div class="r-item"><span class="r-item-name">${item.name}</span><span class="r-item-qty">x${qty}</span></div>`;
-      msgText += `• ${item.name} (${qty}x)\n`;
+  // --- LOGIKA INLINE QTY MENU BIASA ---
+  function handleAddClick(btn) {
+    const card = btn.closest('.menu-item');
+    addToCartLogic(card.dataset.name, card.dataset.price, 1);
+    btn.style.display = 'none';
+    card.querySelector('.qty-control').classList.add('active');
+    card.querySelector('.qty-val-sm').textContent = '1';
+  }
+
+  function handleInlineQty(btn, delta) {
+    const card = btn.closest('.menu-item');
+    const name = card.dataset.name;
+    const qtyValEl = card.querySelector('.qty-val-sm');
+    let newQty = parseInt(qtyValEl.textContent) + delta;
+
+    if (newQty <= 0) {
+      removeFromCartByName(name);
+      card.querySelector('.qty-control').classList.remove('active');
+      card.querySelector('.menu-add').style.display = 'flex';
+    } else {
+      updateCartQtyByName(name, newQty);
+      qtyValEl.textContent = newQty;
     }
   }
-  saveTransaction({ date:getTodayStr(), time:timeStr, orderId, buyer:buyerName, type:orderType, rice:ricePortion, sambal:useSambal, items:itemNames.join('; '), price:rawPrice, notes });
-  document.getElementById('rDate').innerText = `${dateStr} • ${timeStr}`;
-  document.getElementById('rOrderId').innerText = orderId;
-  document.getElementById('rBuyer').innerText = buyerName;
-  document.getElementById('rType').innerText = orderType;
-  document.getElementById('rRice').innerText = ricePortion;
-  document.getElementById('rTotalPrice').innerText = formattedPrice;
-  document.getElementById('rItems').innerHTML = itemsHtml;
-  msgText += `━━━━━━━━━━━━━━━━━\n💰 *TOTAL BAYAR: ${formattedPrice}*\n`;
-  if (notes) { document.getElementById('rNotesBox').style.display='block'; document.getElementById('rNotesText').innerText=notes; msgText+=`📝 *Catatan:* ${notes}\n`; }
-  else { document.getElementById('rNotesBox').style.display='none'; }
-  msgText += `\nMohon diproses ya! 🙏`;
-  try {
-    const canvas = await html2canvas(document.getElementById('receiptCapture'), { backgroundColor:'#ffffff', scale:2, useCORS:true });
-    canvas.toBlob(function(blob) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download=`Struk_KantinRahayu_${orderId}.jpg`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-      setTimeout(() => {
-        window.open(`https://wa.me/6285189914887?text=${encodeURIComponent(msgText)}`, '_blank');
-        btn.innerText=orig; btn.disabled=false; closeCheckout(); cart={}; renderCustomerMenu(); updateCartUI();
-        alert("✅ Struk terunduh & data tersimpan!\nLampirkan gambar struk di WhatsApp.");
-      }, 1000);
-    }, 'image/jpeg', 0.95);
-  } catch(err) { console.error(err); alert("Gagal membuat struk."); btn.innerText=orig; btn.disabled=false; }
-}
 
-function openAdmin() { document.getElementById('adminModal').classList.add('open'); document.getElementById('loginStep').style.display='block'; document.getElementById('dashboardStep').style.display='none'; document.getElementById('adminPass').value=''; }
-function closeAdmin() { document.getElementById('adminModal').classList.remove('open'); }
-function checkLogin() {
-  if (document.getElementById('adminPass').value==="12345") {
-    document.getElementById('loginStep').style.display='none'; document.getElementById('dashboardStep').style.display='block';
-    tempDailySelection=[...dailyMenuIds]; renderAdminMenuList(); switchTab('menu');
-  } else alert("Password salah!");
-}
-function logoutAdmin() { document.getElementById('dashboardStep').style.display='none'; document.getElementById('loginStep').style.display='block'; document.getElementById('adminPass').value=''; }
-function switchTab(tab) {
-  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
-  if (tab==='menu') { document.querySelector('.admin-tab:nth-child(1)').classList.add('active'); document.getElementById('tabMenu').classList.add('active'); }
-  else { document.querySelector('.admin-tab:nth-child(2)').classList.add('active'); document.getElementById('tabHistory').classList.add('active'); renderHistory(); }
-}
-function renderAdminMenuList() {
-  document.getElementById('adminMenuList').innerHTML = MASTER_MENU.map((name,i) => {
-    const checked = tempDailySelection.includes(i);
-    return `<div class="admin-menu-item ${checked?'checked':''}" onclick="toggleAdminMenu(${i})"><div class="admin-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="admin-menu-name">${name}</span></div>`;
-  }).join('');
-}
-function toggleAdminMenu(i) {
-  if (tempDailySelection.includes(i)) tempDailySelection=tempDailySelection.filter(x=>x!==i); else tempDailySelection.push(i);
-  renderAdminMenuList();
-}
-function saveDailyMenu() {
-  tempDailySelection.sort((a,b)=>a-b); dailyMenuIds=[...tempDailySelection];
-  localStorage.setItem('rahayu_daily_menu',JSON.stringify(dailyMenuIds));
-  cart={}; renderCustomerMenu(); updateCartUI();
-  alert(`✅ ${dailyMenuIds.length} menu ditampilkan.`); closeAdmin();
-}
+  // --- LOGIKA INLINE QTY FAVORIT ---
+  function handleFavAddClick(btn) {
+    const card = btn.closest('.fav-card');
+    addToCartLogic(card.dataset.name, card.dataset.price, 1);
+    btn.style.display = 'none';
+    card.querySelector('.fav-qty-control').classList.add('active');
+    card.querySelector('.fav-qty-val').textContent = '1';
+  }
 
-init();
+  function handleFavInlineQty(btn, delta) {
+    const card = btn.closest('.fav-card');
+    const name = card.dataset.name;
+    const qtyValEl = card.querySelector('.fav-qty-val');
+    let newQty = parseInt(qtyValEl.textContent) + delta;
+
+    if (newQty <= 0) {
+      removeFromCartByName(name);
+      card.querySelector('.fav-qty-control').classList.remove('active');
+      card.querySelector('.fav-add-btn').style.display = 'flex';
+    } else {
+      updateCartQtyByName(name, newQty);
+      qtyValEl.textContent = newQty;
+    }
+  }
+
+  // --- CORE CART FUNCTIONS ---
+  function addToCartLogic(name, price, qty) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) existing.qty += qty;
+    else cart.push({ name, price: parseInt(price), qty: qty });
+    updateCartUI();
+  }
+
+  function updateCartQtyByName(name, newQty) {
+    const item = cart.find(i => i.name === name);
+    if (item) { item.qty = newQty; updateCartUI(); }
+  }
+
+  function removeFromCartByName(name) {
+    cart = cart.filter(item => item.name !== name);
+    updateCartUI();
+  }
+
+  function changeQty(index, delta) {
+    cart[index].qty += delta;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    updateCartUI();
+  }
+
+  function clearCart() {
+    cart = [];
+    updateCartUI();
+  }
+
+  // --- UPDATE UI & SYNC ---
+  function updateCartUI() {
+    const emptyEl = document.getElementById('cartEmpty');
+    const itemsEl = document.getElementById('cartItems');
+    const listEl = document.getElementById('cartList');
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('totalPrice');
+    const badgeEl = document.getElementById('cartBadge');
+
+    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const total = subtotal + (cart.length > 0 ? 2000 : 0);
+
+    // Update Badge
+    if (badgeEl) {
+      if (totalItems > 0) {
+        badgeEl.textContent = totalItems > 99 ? '99+' : totalItems;
+        badgeEl.classList.add('visible');
+        badgeEl.classList.remove('pop'); void badgeEl.offsetWidth; badgeEl.classList.add('pop');
+      } else { badgeEl.classList.remove('visible'); }
+    }
+
+    // Update Cart List
+    if (cart.length === 0) { emptyEl.style.display = 'block'; itemsEl.style.display = 'none'; }
+    else { emptyEl.style.display = 'none'; itemsEl.style.display = 'block'; }
+
+    listEl.innerHTML = cart.map((item, i) => `
+      <div class="cart-item">
+        <div class="cart-item-img"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg></div>
+        <div class="cart-item-body"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">Rp ${(item.price * item.qty).toLocaleString('id-ID')}</div></div>
+        <div class="cart-qty">
+          <div class="qty-btn" onclick="changeQty(${i}, -1)">−</div>
+          <div class="qty-val">${item.qty}</div>
+          <div class="qty-btn" onclick="changeQty(${i}, 1)">+</div>
+        </div>
+      </div>
+    `).join('');
+
+    subtotalEl.textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
+    totalEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+    
+    syncButtons();
+  }
+
+  function syncButtons() {
+    // Sync Menu Grid
+    document.querySelectorAll('.menu-item').forEach(card => {
+      const item = cart.find(i => i.name === card.dataset.name);
+      const addBtn = card.querySelector('.menu-add');
+      const qtyCtrl = card.querySelector('.qty-control');
+      const qtyVal = card.querySelector('.qty-val-sm');
+      if (!addBtn) return;
+      if (item && item.qty > 0) {
+        addBtn.style.display = 'none'; qtyCtrl.classList.add('active'); qtyVal.textContent = item.qty;
+      } else {
+        addBtn.style.display = 'flex'; qtyCtrl.classList.remove('active');
+      }
+    });
+    // Sync Favorites
+    document.querySelectorAll('.fav-card').forEach(card => {
+      const item = cart.find(i => i.name === card.dataset.name);
+      const addBtn = card.querySelector('.fav-add-btn');
+      const qtyCtrl = card.querySelector('.fav-qty-control');
+      const qtyVal = card.querySelector('.fav-qty-val');
+      if (!addBtn) return;
+      if (item && item.qty > 0) {
+        addBtn.style.display = 'none'; qtyCtrl.classList.add('active'); qtyVal.textContent = item.qty;
+      } else {
+        addBtn.style.display = 'flex'; qtyCtrl.classList.remove('active');
+      }
+    });
+  }
+
+  function checkout() {
+    if (cart.length === 0) return;
+    const notes = document.getElementById('orderNotes').value;
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const total = subtotal + 2000;
+    let msg = '🏪 *PESANAN ATARA SPACE*\n\n';
+    cart.forEach((item, i) => { msg += `${i+1}. ${item.name} x${item.qty} = Rp ${(item.price*item.qty).toLocaleString('id-ID')}\n`; });
+    msg += `\n💰 Total: Rp ${total.toLocaleString('id-ID')}`;
+    if (notes.trim()) msg += `\n📝 Catatan: ${notes.trim()}`;
+    window.open(`https://wa.me/6285189914887?text=${encodeURIComponent(msg)}`, '_blank');
+  }
 </script>
 </body>
 </html>

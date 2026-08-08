@@ -6,6 +6,8 @@
 <title>Kantin Rahayu — Classic Soft</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.0/index.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/nunito-sans@5.0.0/index.css" />
+<!-- Library untuk convert HTML ke Gambar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --bg: #F9F5F0;
@@ -121,7 +123,7 @@
   .add-btn {
     padding: 10px 20px; background: var(--ink); color: #fff; border: none;
     border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer;
-    transition: all 0.2s ease; letter-spacing: 0.3px;
+    transition: all 0.2s ease; letter-spacing: 0.3px; white-space: nowrap;
   }
   .add-btn:hover { background: var(--accent-dark); transform: scale(1.05); }
   .add-btn:active { transform: scale(0.95); }
@@ -178,13 +180,42 @@
     width: 36px; height: 36px; border-radius: 50%; background: var(--bg); border: none;
     font-size: 20px; color: var(--ink-light); cursor: pointer; display: flex; align-items: center; justify-content: center;
   }
-  .summary-list { margin-bottom: 24px; background: var(--bg); border-radius: var(--radius-md); padding: 16px; }
-  .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
-  .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .summary-item span:first-child { color: var(--ink-light); }
-  .summary-item span:last-child { font-weight: 700; color: var(--ink); }
 
+  /* Receipt Preview Style (Hidden by default, shown when generating) */
+  .receipt-preview-container {
+    background: #fff; border: 2px dashed var(--line); border-radius: var(--radius-md);
+    padding: 20px; margin-bottom: 20px; position: relative;
+  }
+  .receipt-badge {
+    position: absolute; top: 10px; right: 10px; font-size: 10px; color: var(--ink-light);
+    background: var(--bg); padding: 2px 8px; border-radius: 100px;
+  }
+
+  /* Actual Receipt Design (For Screenshot) */
+  #receiptCapture {
+    background: #fff; padding: 30px 24px; width: 320px; font-family: 'Nunito Sans', sans-serif; color: #333;
+    position: fixed; left: -9999px; top: 0; /* Hide offscreen */
+  }
+  .r-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ddd; padding-bottom: 15px; }
+  .r-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A3B32; margin: 0; }
+  .r-sub { font-size: 11px; color: #888; margin-top: 4px; }
+  .r-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 15px; color: #666; }
+  .r-items { margin-bottom: 15px; }
+  .r-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .r-item-name { font-weight: 600; flex: 1; }
+  .r-item-qty { color: #888; margin: 0 10px; }
+  .r-divider { border-top: 1px dashed #ddd; margin: 15px 0; }
+  .r-notes { font-size: 11px; color: #666; font-style: italic; margin-top: 10px; background: #f9f9f9; padding: 8px; border-radius: 8px; }
+  .r-footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 15px; }
+
+  /* Form Elements */
   .section-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.3px; }
+  .input-field { 
+    width: 100%; padding: 14px; border-radius: var(--radius-md); border: 2px solid var(--line); 
+    font-family: inherit; font-size: 14px; outline: none; background: #fff; transition: all 0.25s; margin-bottom: 20px;
+  }
+  .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(198,142,89,0.1); }
+  
   .rice-options, .type-selector { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
   .option-card { flex: 1; position: relative; min-width: 80px; }
   .option-card input { position: absolute; opacity: 0; }
@@ -195,73 +226,52 @@
     transition: all 0.25s ease; border: 2px solid transparent;
   }
   .option-card input:checked + .option-label { background: var(--accent-soft); color: var(--accent-dark); border-color: var(--accent); }
+  
   .notes-input {
     width: 100%; padding: 16px; border-radius: var(--radius-md); background: var(--bg); border: 2px solid transparent;
-    font-family: 'Nunito Sans', sans-serif; font-size: 14px; resize: none; height: 90px;
+    font-family: 'Nunito Sans', sans-serif; font-size: 14px; resize: none; height: 80px;
     margin-bottom: 20px; outline: none; transition: all 0.25s ease; color: var(--ink);
   }
   .notes-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(198,142,89,0.1); }
-  .notes-input::placeholder { color: #bfb0a3; }
 
-  /* Sambal Toggle Style */
+  /* Toggle */
   .toggle-row {
     display: flex; align-items: center; justify-content: space-between;
     background: var(--bg); padding: 14px 18px; border-radius: var(--radius-md);
-    margin-bottom: 20px; cursor: pointer; transition: background 0.2s;
-    border: 2px solid transparent;
+    margin-bottom: 20px; cursor: pointer; transition: background 0.2s; border: 2px solid transparent;
   }
-  .toggle-row:hover { background: #f0ebe4; }
   .toggle-row.active { border-color: var(--accent); background: var(--accent-soft); }
   .toggle-left { display: flex; align-items: center; gap: 12px; }
-  .toggle-icon { font-size: 20px; }
-  .toggle-text { font-size: 14px; font-weight: 700; color: var(--ink); }
-  
-  /* Custom Checkbox Circle */
   .custom-check {
     width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line);
-    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-    background: #fff; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff;
   }
   .custom-check svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; fill: none; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
   .toggle-row.active .custom-check { background: var(--accent); border-color: var(--accent); }
   .toggle-row.active .custom-check svg { opacity: 1; transform: scale(1); }
 
-  /* Admin Specifics */
-  .input-group { margin-bottom: 18px; }
-  .input-field { 
-    width: 100%; padding: 14px; border-radius: var(--radius-md); border: 2px solid var(--line); 
-    font-family: inherit; font-size: 14px; outline: none; background: #fff; transition: all 0.25s; 
-  }
-  .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(198,142,89,0.1); }
-  
+  /* Admin Styles */
   .btn-primary {
     width: 100%; padding: 16px; background: var(--ink); color: #fff; border: none;
     border-radius: 100px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 8px; transition: all 0.25s ease;
   }
-  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74,59,50,0.2); }
-  
-  /* Admin Menu List with Checkboxes */
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
   .admin-menu-list { margin-top: 20px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
   .admin-menu-item {
     display: flex; align-items: center; gap: 12px; padding: 12px 16px;
     background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 8px;
     cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
   }
-  .admin-menu-item:hover { background: #f0ebe4; }
   .admin-menu-item.checked { border-color: var(--accent); background: var(--accent-soft); }
-  
   .admin-checkbox {
     width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--line);
-    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-    background: #fff; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff;
   }
   .admin-menu-item.checked .admin-checkbox { background: var(--accent); border-color: var(--accent); }
   .admin-checkbox svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; fill: none; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
   .admin-menu-item.checked .admin-checkbox svg { opacity: 1; transform: scale(1); }
-  
   .admin-menu-name { font-weight: 700; font-size: 14px; color: var(--ink); flex: 1; }
-  .admin-menu-cat { font-size: 10px; color: var(--ink-light); background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 100px; }
-
+  
   .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-light); }
   .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
 </style>
@@ -283,13 +293,13 @@
     <div class="banner">
       <span class="banner-tag">✨ Menu Ready Hari Ini</span>
       <h2>Selamat Datang di<br/>Kantin Rahayu</h2>
-      <p>Nikmati cita rasa masakan rumah yang autentik, hangat, dan penuh cinta.</p>
+      <p>Nikmati cita rasa masakan rumah yang autentik.</p>
     </div>
     <div id="menuContainer"></div>
     <div id="emptyState" class="empty-state" style="display:none;">
       <div class="empty-icon">🍽️</div>
       <h3>Belum Ada Menu Ready</h3>
-      <p>Admin sedang menyiapkan menu hari ini. Silakan cek lagi nanti ya!</p>
+      <p>Admin sedang menyiapkan menu hari ini.</p>
     </div>
   </div>
 
@@ -301,72 +311,50 @@
     <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Pesan Sekarang</button>
   </div>
 
-  <!-- Checkout Modal -->
+  <!-- PAYMENT MODAL -->
   <div class="modal-overlay" id="checkoutModal">
     <div class="checkout-modal">
       <div class="modal-header">
-        <h3 class="modal-title">Konfirmasi Pesanan</h3>
+        <h3 class="modal-title">Pembayaran & Konfirmasi</h3>
         <button class="close-modal" onclick="closeCheckout()">×</button>
       </div>
 
-      <div class="summary-list" id="checkoutSummary"></div>
+      <span class="section-label">👤 Identitas Pemesan</span>
+      <input type="text" id="buyerName" class="input-field" placeholder="Nama Lengkap Pembeli..." style="margin-bottom: 20px;">
 
       <span class="section-label">🍚 Porsi Nasi</span>
       <div class="rice-options">
-        <label class="option-card">
-          <input type="radio" name="ricePortion" value="1 Porsi" checked>
-          <div class="option-label">1 Porsi</div>
-        </label>
-        <label class="option-card">
-          <input type="radio" name="ricePortion" value="1/2 Porsi">
-          <div class="option-label">½ Porsi</div>
-        </label>
-        <label class="option-card">
-          <input type="radio" name="ricePortion" value="Tanpa Nasi">
-          <div class="option-label">Tanpa Nasi 🚫</div>
-        </label>
+        <label class="option-card"><input type="radio" name="ricePortion" value="1 Porsi" checked><div class="option-label">1 Porsi</div></label>
+        <label class="option-card"><input type="radio" name="ricePortion" value="1/2 Porsi"><div class="option-label">½ Porsi</div></label>
+        <label class="option-card"><input type="radio" name="ricePortion" value="Tanpa Nasi"><div class="option-label">Tanpa Nasi 🚫</div></label>
       </div>
 
-      <!-- SAMBAL TOGGLE -->
       <span class="section-label">🌶️ Pelengkap</span>
       <div class="toggle-row" id="sambalToggle" onclick="toggleSambal()">
-        <div class="toggle-left">
-          <span class="toggle-icon">🌶️</span>
-          <span class="toggle-text">Pakai Sambal</span>
-        </div>
-        <div class="custom-check">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
+        <div class="toggle-left"><span>🌶️</span><span style="font-weight:700;font-size:14px;">Pakai Sambal</span></div>
+        <div class="custom-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
 
       <span class="section-label">📋 Tipe Pesanan</span>
       <div class="type-selector">
-        <label class="option-card">
-          <input type="radio" name="orderType" value="Makan di Tempat" checked onchange="updateOrderType(this)">
-          <div class="option-label">Makan Di Sini 🍽️</div>
-        </label>
-        <label class="option-card">
-          <input type="radio" name="orderType" value="Dibungkus" onchange="updateOrderType(this)">
-          <div class="option-label">Dibungkus 🥡</div>
-        </label>
+        <label class="option-card"><input type="radio" name="orderType" value="Makan di Tempat" checked onchange="updateOrderType(this)"><div class="option-label">Makan Di Sini 🍽️</div></label>
+        <label class="option-card"><input type="radio" name="orderType" value="Dibungkus" onchange="updateOrderType(this)"><div class="option-label">Dibungkus 🥡</div></label>
       </div>
 
       <span class="section-label">📝 Catatan Tambahan</span>
-      <textarea class="notes-input" id="orderNotes" placeholder="Contoh: Tidak pakai sayur, extra sambal, nasi agak keras, dll."></textarea>
+      <textarea class="notes-input" id="orderNotes" placeholder="Contoh: Tidak pakai sayur, extra sambal..."></textarea>
 
-      <button class="checkout-btn" onclick="sendToWhatsapp()" style="width:100%;">Kirim via WhatsApp</button>
+      <button class="checkout-btn" onclick="processPayment()" style="width:100%;">🧾 Buat Struk & Kirim WA</button>
     </div>
   </div>
 
-  <!-- Admin Modal -->
+  <!-- ADMIN MODAL -->
   <div class="modal-overlay" id="adminModal" style="align-items:center;">
     <div class="admin-modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Panel Admin</h3>
         <button class="close-modal" onclick="closeAdmin()">×</button>
       </div>
-      
-      <!-- Login Step -->
       <div id="loginStep">
         <div class="input-group">
           <label class="section-label">Password</label>
@@ -374,25 +362,47 @@
         </div>
         <button class="btn-primary" onclick="checkLogin()">Masuk Dashboard</button>
       </div>
-
-      <!-- Dashboard Step -->
       <div id="dashboardStep" style="display:none;">
-        <p style="font-size:13px; color:var(--ink-light); margin-bottom:16px; line-height:1.5;">
-          Centang menu yang <strong>READY</strong> hari ini, lalu klik simpan. Menu yang tidak dicentang akan disembunyikan dari pelanggan.
-        </p>
-        
+        <p style="font-size:13px; color:var(--ink-light); margin-bottom:16px;">Centang menu yang READY hari ini.</p>
         <div class="admin-menu-list" id="adminMenuList"></div>
-        
         <button class="btn-primary" onclick="saveDailyMenu()" style="margin-top:20px;">💾 Simpan Menu Hari Ini</button>
-        <button class="btn-primary" onclick="logoutAdmin()" style="background:transparent; color:var(--ink-light); margin-top:8px; box-shadow:none;">Keluar</button>
+        <button class="btn-primary" onclick="logoutAdmin()" style="background:transparent; color:var(--ink-light); margin-top:8px;">Keluar</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- HIDDEN RECEIPT TEMPLATE FOR SCREENSHOT -->
+<div id="receiptCapture">
+  <div class="r-header">
+    <h2 class="r-brand">Kantin Rahayu</h2>
+    <div class="r-sub">Masakan Rumah • Est. 2024</div>
+  </div>
+  <div class="r-info">
+    <span id="rDate"></span>
+    <span id="rOrderId"></span>
+  </div>
+  <div class="r-info" style="margin-bottom: 5px;">
+    <span><strong>Pemesan:</strong></span>
+    <span id="rBuyer" style="font-weight:700;"></span>
+  </div>
+  <div class="r-info">
+    <span><strong>Tipe:</strong> <span id="rType"></span></span>
+    <span><strong>Nasi:</strong> <span id="rRice"></span></span>
+  </div>
+  <div class="r-divider"></div>
+  <div class="r-items" id="rItems"></div>
+  <div class="r-divider"></div>
+  <div id="rNotesBox" class="r-notes" style="display:none;">📝 <span id="rNotesText"></span></div>
+  <div class="r-footer">
+    Terima kasih atas pesanan Anda!<br>
+    Semoga harimu menyenangkan ❤️
+  </div>
+</div>
+
 <script>
   // ==========================================
-  // MASTER MENU DATA (Semua menu kantin)
+  // DATA & STATE
   // ==========================================
   const MASTER_MENU = [
     "Ikan Nila Goreng", "Ikan Mas Goreng", "Ikan Deles Goreng", "Ikan Kembung Goreng", "Ikan Kembung Balado",
@@ -406,13 +416,6 @@
     "Tumis Asin Cucut", "Jengkol Goreng", "Balado Jengkol"
   ];
 
-  // Generate placeholder image based on name
-  function getMenuImage(name) {
-    const encoded = encodeURIComponent(name);
-    return `https://placehold.co/200x200/F2E6D8/9E6B3A?text=${encoded}&font=playfair`;
-  }
-
-  // Load saved daily menu or default to empty
   let dailyMenuIds = JSON.parse(localStorage.getItem('rahayu_daily_menu')) || [];
   let cart = {}; 
   let orderType = "Makan di Tempat";
@@ -420,194 +423,179 @@
   let tempDailySelection = [];
 
   function init() { renderCustomerMenu(); updateCartUI(); }
+  function getMenuImage(name) { return `https://placehold.co/200x200/F2E6D8/9E6B3A?text=${encodeURIComponent(name)}&font=playfair`; }
+  function getActiveMenu() { return dailyMenuIds.map(id => ({ id, name: MASTER_MENU[id], image: getMenuImage(MASTER_MENU[id]) })); }
 
   // ==========================================
   // CUSTOMER VIEW
   // ==========================================
-  function getActiveMenu() {
-    return dailyMenuIds.map((id, index) => ({
-      id: id,
-      name: MASTER_MENU[id],
-      image: getMenuImage(MASTER_MENU[id])
-    }));
-  }
-
   function renderCustomerMenu() {
     const container = document.getElementById('menuContainer');
     const emptyState = document.getElementById('emptyState');
     const activeMenu = getActiveMenu();
-    
-    if (activeMenu.length === 0) { 
-      container.style.display = 'none'; 
-      emptyState.style.display = 'block'; 
-      return; 
-    }
-    
-    container.style.display = 'block'; 
-    emptyState.style.display = 'none';
-    
+    if (activeMenu.length === 0) { container.style.display = 'none'; emptyState.style.display = 'block'; return; }
+    container.style.display = 'block'; emptyState.style.display = 'none';
     let html = `<div class="menu-section-title"><span>Menu Ready</span><span>${activeMenu.length} Item</span></div><div class="menu-grid">`;
-    
     activeMenu.forEach(item => {
       const qty = cart[item.id] || 0;
-      html += `
-        <div class="card">
-          <div class="card-img"><img src="${item.image}" alt="${item.name}"></div>
-          <div class="card-body"><div class="card-title">${item.name}</div></div>
-          <div class="card-actions">
-            ${qty === 0 
-              ? `<button class="add-btn" onclick="addToCart(${item.id})">Tambah</button>` 
-              : `<div class="qty-ctrl active">
-                  <button class="q-btn" onclick="updateQty(${item.id}, -1)">−</button>
-                  <span class="q-val">${qty}</span>
-                  <button class="q-btn" onclick="updateQty(${item.id}, 1)">+</button>
-                </div>`
-            }
-          </div>
-        </div>`;
+      html += `<div class="card">
+        <div class="card-img"><img src="${item.image}" alt="${item.name}"></div>
+        <div class="card-body"><div class="card-title">${item.name}</div></div>
+        <div class="card-actions">
+          ${qty === 0 ? `<button class="add-btn" onclick="addToCart(${item.id})">Tambah</button>` : 
+            `<div class="qty-ctrl active">
+              <button class="q-btn" onclick="updateQty(${item.id}, -1)">−</button>
+              <span class="q-val">${qty}</span>
+              <button class="q-btn" onclick="updateQty(${item.id}, 1)">+</button>
+            </div>`}
+        </div></div>`;
     });
-    
-    html += `</div>`;
-    container.innerHTML = html;
+    container.innerHTML = html + `</div>`;
   }
 
   function addToCart(id) { cart[id] = 1; renderCustomerMenu(); updateCartUI(); }
-  
-  function updateQty(id, delta) { 
-    if (!cart[id]) cart[id] = 0; 
-    cart[id] += delta; 
-    if (cart[id] <= 0) delete cart[id]; 
-    renderCustomerMenu(); 
-    updateCartUI(); 
-  }
-  
+  function updateQty(id, delta) { if (!cart[id]) cart[id] = 0; cart[id] += delta; if (cart[id] <= 0) delete cart[id]; renderCustomerMenu(); updateCartUI(); }
   function updateCartUI() {
-    let count = 0; 
-    for (const qty of Object.values(cart)) count += qty;
+    let count = Object.values(cart).reduce((a,b)=>a+b, 0);
     document.getElementById('cartCount').innerText = `${count} Item`;
     document.getElementById('checkoutBtn').disabled = count === 0;
   }
 
   // ==========================================
-  // CHECKOUT LOGIC
+  // CHECKOUT & RECEIPT GENERATION
   // ==========================================
   function openCheckout() {
-    const modal = document.getElementById('checkoutModal');
-    const summary = document.getElementById('checkoutSummary');
-    const activeMenu = getActiveMenu();
-    
-    let html = '';
-    for (const [id, qty] of Object.entries(cart)) {
-      const item = activeMenu.find(m => m.id == id);
-      if (item) html += `<div class="summary-item"><span>${item.name}</span><span>x${qty}</span></div>`;
-    }
-    summary.innerHTML = html;
-    
+    document.getElementById('checkoutModal').classList.add('open');
     document.querySelector('input[name="ricePortion"][value="1 Porsi"]').checked = true;
     document.querySelector('input[name="orderType"][value="Makan di Tempat"]').checked = true;
     orderType = "Makan di Tempat";
     document.getElementById('orderNotes').value = '';
+    document.getElementById('buyerName').value = '';
     useSambal = false;
     document.getElementById('sambalToggle').classList.remove('active');
-    
-    modal.classList.add('open');
   }
-
   function closeCheckout() { document.getElementById('checkoutModal').classList.remove('open'); }
   function updateOrderType(radio) { orderType = radio.value; }
+  function toggleSambal() { useSambal = !useSambal; document.getElementById('sambalToggle').classList.toggle('active', useSambal); }
 
-  function toggleSambal() {
-    useSambal = !useSambal;
-    document.getElementById('sambalToggle').classList.toggle('active', useSambal);
-  }
+  async function processPayment() {
+    const buyerName = document.getElementById('buyerName').value.trim();
+    if (!buyerName) { alert("Mohon isi nama pembeli terlebih dahulu!"); return; }
 
-  function sendToWhatsapp() {
-    const notes = document.getElementById('orderNotes').value.trim();
+    const btn = document.querySelector('#checkoutModal .checkout-btn');
+    const originalText = btn.innerText;
+    btn.innerText = "⏳ Membuat Struk...";
+    btn.disabled = true;
+
+    // 1. Prepare Receipt Data
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    const orderId = 'KR-' + Math.floor(Math.random() * 10000);
     const ricePortion = document.querySelector('input[name="ricePortion"]:checked').value;
+    const notes = document.getElementById('orderNotes').value.trim();
     const activeMenu = getActiveMenu();
+
+    // Fill Hidden Receipt Template
+    document.getElementById('rDate').innerText = `${dateStr} • ${timeStr}`;
+    document.getElementById('rOrderId').innerText = orderId;
+    document.getElementById('rBuyer').innerText = buyerName;
+    document.getElementById('rType').innerText = orderType;
+    document.getElementById('rRice').innerText = ricePortion;
     
-    let msg = "*PESANAN KANTIN RAHAYU*\n\n";
-    msg += `📋 *Tipe:* ${orderType}\n`;
-    msg += `🍚 *Nasi:* ${ricePortion}\n`;
-    msg += `🌶️ *Sambal:* ${useSambal ? 'Ya, pakai sambal' : 'Tidak pakai sambal'}\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
+    let itemsHtml = '';
+    let msgText = `*STRUK PESANAN KANTIN RAHAYU*\n${orderId}\n\n👤 *Nama:* ${buyerName}\n📋 *Tipe:* ${orderType}\n🍚 *Nasi:* ${ricePortion}\n🌶️ *Sambal:* ${useSambal ? 'Ya' : 'Tidak'}\n━━━━━━━━━━━━━━━━━\n`;
     
     for (const [id, qty] of Object.entries(cart)) {
       const item = activeMenu.find(m => m.id == id);
-      if (item) msg += `• ${item.name} (${qty}x)\n`;
+      if (item) {
+        itemsHtml += `<div class="r-item"><span class="r-item-name">${item.name}</span><span class="r-item-qty">x${qty}</span></div>`;
+        msgText += `• ${item.name} (${qty}x)\n`;
+      }
     }
+    document.getElementById('rItems').innerHTML = itemsHtml;
     
-    if (notes) { msg += `━━━━━━━━━━━━━━━━━\n📝 *Catatan:* ${notes}\n`; }
-    msg += `\nMohon diproses ya! 🙏`;
-    
-    const phone = "6285189914887"; 
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    if (notes) {
+      document.getElementById('rNotesBox').style.display = 'block';
+      document.getElementById('rNotesText').innerText = notes;
+      msgText += `━━━━━━━━━━━━━━━━━\n📝 *Catatan:* ${notes}\n`;
+    } else {
+      document.getElementById('rNotesBox').style.display = 'none';
+    }
+    msgText += `\nMohon diproses ya! 🙏`;
+
+    // 2. Generate Image using html2canvas
+    try {
+      const canvas = await html2canvas(document.getElementById('receiptCapture'), { 
+        backgroundColor: '#ffffff', 
+        scale: 2,
+        useCORS: true 
+      });
+      
+      // Convert to Blob and Download
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Struk_KantinRahayu_${orderId}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // 3. Open WhatsApp with Text
+        setTimeout(() => {
+          const phone = "6285189914887";
+          window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msgText)}`, '_blank');
+          
+          // Reset UI
+          btn.innerText = originalText;
+          btn.disabled = false;
+          closeCheckout();
+          cart = {};
+          renderCustomerMenu();
+          updateCartUI();
+          
+          alert("✅ Struk berhasil diunduh!\nSilakan lampirkan gambar struk di chat WhatsApp yang sudah terbuka.");
+        }, 1000);
+        
+      }, 'image/jpeg', 0.95);
+      
+    } catch (err) {
+      console.error(err);
+      alert("Gagal membuat struk. Coba lagi.");
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
   }
 
   // ==========================================
   // ADMIN LOGIC
   // ==========================================
-  function openAdmin() { 
-    document.getElementById('adminModal').classList.add('open'); 
-    document.getElementById('loginStep').style.display = 'block'; 
-    document.getElementById('dashboardStep').style.display = 'none'; 
-    document.getElementById('adminPass').value = ''; 
-  }
-  
+  function openAdmin() { document.getElementById('adminModal').classList.add('open'); document.getElementById('loginStep').style.display = 'block'; document.getElementById('dashboardStep').style.display = 'none'; document.getElementById('adminPass').value = ''; }
   function closeAdmin() { document.getElementById('adminModal').classList.remove('open'); }
-  
-  function checkLogin() { 
-    if (document.getElementById('adminPass').value === "12345") { 
-      document.getElementById('loginStep').style.display = 'none'; 
-      document.getElementById('dashboardStep').style.display = 'block'; 
-      tempDailySelection = [...dailyMenuIds];
-      renderAdminMenuList(); 
-    } else { 
-      alert("Password salah!"); 
-    } 
-  }
-
-  function logoutAdmin() {
-    document.getElementById('dashboardStep').style.display = 'none';
-    document.getElementById('loginStep').style.display = 'block';
-    document.getElementById('adminPass').value = '';
-  }
-
+  function checkLogin() { if (document.getElementById('adminPass').value === "12345") { document.getElementById('loginStep').style.display = 'none'; document.getElementById('dashboardStep').style.display = 'block'; tempDailySelection = [...dailyMenuIds]; renderAdminMenuList(); } else { alert("Password salah!"); } }
+  function logoutAdmin() { document.getElementById('dashboardStep').style.display = 'none'; document.getElementById('loginStep').style.display = 'block'; document.getElementById('adminPass').value = ''; }
   function renderAdminMenuList() {
-    const list = document.getElementById('adminMenuList');
-    list.innerHTML = MASTER_MENU.map((name, index) => {
+    document.getElementById('adminMenuList').innerHTML = MASTER_MENU.map((name, index) => {
       const isChecked = tempDailySelection.includes(index);
-      return `
-        <div class="admin-menu-item ${isChecked ? 'checked' : ''}" onclick="toggleAdminMenu(${index})">
-          <div class="admin-checkbox">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span class="admin-menu-name">${name}</span>
-        </div>`;
+      return `<div class="admin-menu-item ${isChecked ? 'checked' : ''}" onclick="toggleAdminMenu(${index})">
+        <div class="admin-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="admin-menu-name">${name}</span>
+      </div>`;
     }).join('');
   }
-
   function toggleAdminMenu(index) {
-    if (tempDailySelection.includes(index)) {
-      tempDailySelection = tempDailySelection.filter(i => i !== index);
-    } else {
-      tempDailySelection.push(index);
-    }
+    if (tempDailySelection.includes(index)) tempDailySelection = tempDailySelection.filter(i => i !== index);
+    else tempDailySelection.push(index);
     renderAdminMenuList();
   }
-
   function saveDailyMenu() {
-    // Sort for consistency
-    tempDailySelection.sort((a, b) => a - b);
+    tempDailySelection.sort((a,b)=>a-b);
     dailyMenuIds = [...tempDailySelection];
     localStorage.setItem('rahayu_daily_menu', JSON.stringify(dailyMenuIds));
-    
-    // Clear cart since menu changed
-    cart = {};
-    renderCustomerMenu();
-    updateCartUI();
-    
-    alert(`✅ Berhasil! ${dailyMenuIds.length} menu ditampilkan ke pelanggan.`);
+    cart = {}; renderCustomerMenu(); updateCartUI();
+    alert(`✅ Berhasil! ${dailyMenuIds.length} menu ditampilkan.`);
     closeAdmin();
   }
 

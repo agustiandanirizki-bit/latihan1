@@ -6,7 +6,6 @@
 <title>Kantin Rahayu — Classic Soft</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.0/index.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/nunito-sans@5.0.0/index.css" />
-<!-- Library untuk convert HTML ke Gambar -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
@@ -181,33 +180,6 @@
     font-size: 20px; color: var(--ink-light); cursor: pointer; display: flex; align-items: center; justify-content: center;
   }
 
-  /* Receipt Preview Style (Hidden by default, shown when generating) */
-  .receipt-preview-container {
-    background: #fff; border: 2px dashed var(--line); border-radius: var(--radius-md);
-    padding: 20px; margin-bottom: 20px; position: relative;
-  }
-  .receipt-badge {
-    position: absolute; top: 10px; right: 10px; font-size: 10px; color: var(--ink-light);
-    background: var(--bg); padding: 2px 8px; border-radius: 100px;
-  }
-
-  /* Actual Receipt Design (For Screenshot) */
-  #receiptCapture {
-    background: #fff; padding: 30px 24px; width: 320px; font-family: 'Nunito Sans', sans-serif; color: #333;
-    position: fixed; left: -9999px; top: 0; /* Hide offscreen */
-  }
-  .r-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ddd; padding-bottom: 15px; }
-  .r-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A3B32; margin: 0; }
-  .r-sub { font-size: 11px; color: #888; margin-top: 4px; }
-  .r-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 15px; color: #666; }
-  .r-items { margin-bottom: 15px; }
-  .r-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
-  .r-item-name { font-weight: 600; flex: 1; }
-  .r-item-qty { color: #888; margin: 0 10px; }
-  .r-divider { border-top: 1px dashed #ddd; margin: 15px 0; }
-  .r-notes { font-size: 11px; color: #666; font-style: italic; margin-top: 10px; background: #f9f9f9; padding: 8px; border-radius: 8px; }
-  .r-footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 15px; }
-
   /* Form Elements */
   .section-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.3px; }
   .input-field { 
@@ -215,6 +187,14 @@
     font-family: inherit; font-size: 14px; outline: none; background: #fff; transition: all 0.25s; margin-bottom: 20px;
   }
   .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(198,142,89,0.1); }
+  
+  /* Price Input Specifics */
+  .price-wrapper { position: relative; margin-bottom: 20px; }
+  .price-prefix {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    font-weight: 800; color: var(--accent-dark); font-size: 14px; pointer-events: none;
+  }
+  .price-input { padding-left: 42px !important; font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: 0.5px; }
   
   .rice-options, .type-selector { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
   .option-card { flex: 1; position: relative; min-width: 80px; }
@@ -274,6 +254,24 @@
   
   .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-light); }
   .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
+
+  /* Receipt Hidden Template */
+  #receiptCapture {
+    background: #fff; padding: 30px 24px; width: 320px; font-family: 'Nunito Sans', sans-serif; color: #333;
+    position: fixed; left: -9999px; top: 0;
+  }
+  .r-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ddd; padding-bottom: 15px; }
+  .r-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A3B32; margin: 0; }
+  .r-sub { font-size: 11px; color: #888; margin-top: 4px; }
+  .r-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #666; }
+  .r-items { margin-bottom: 15px; }
+  .r-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .r-item-name { font-weight: 600; flex: 1; }
+  .r-item-qty { color: #888; margin: 0 10px; }
+  .r-divider { border-top: 1px dashed #ddd; margin: 15px 0; }
+  .r-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; color: #4A3B32; margin-top: 10px; font-family: 'Playfair Display', serif; }
+  .r-notes { font-size: 11px; color: #666; font-style: italic; margin-top: 15px; background: #f9f9f9; padding: 8px; border-radius: 8px; }
+  .r-footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 15px; }
 </style>
 </head>
 <body>
@@ -341,10 +339,17 @@
         <label class="option-card"><input type="radio" name="orderType" value="Dibungkus" onchange="updateOrderType(this)"><div class="option-label">Dibungkus 🥡</div></label>
       </div>
 
+      <!-- HARGA INPUT -->
+      <span class="section-label">💰 Total Harga (Diisi Kasir)</span>
+      <div class="price-wrapper">
+        <span class="price-prefix">Rp</span>
+        <input type="text" id="orderPrice" class="input-field price-input" placeholder="0" inputmode="numeric" oninput="formatRupiah(this)">
+      </div>
+
       <span class="section-label">📝 Catatan Tambahan</span>
       <textarea class="notes-input" id="orderNotes" placeholder="Contoh: Tidak pakai sayur, extra sambal..."></textarea>
 
-      <button class="checkout-btn" onclick="processPayment()" style="width:100%;">🧾 Buat Struk & Kirim WA</button>
+      <button class="checkout-btn" id="processBtn" onclick="processPayment()" style="width:100%;">🧾 Buat Struk & Kirim WA</button>
     </div>
   </div>
 
@@ -372,7 +377,7 @@
   </div>
 </div>
 
-<!-- HIDDEN RECEIPT TEMPLATE FOR SCREENSHOT -->
+<!-- HIDDEN RECEIPT TEMPLATE -->
 <div id="receiptCapture">
   <div class="r-header">
     <h2 class="r-brand">Kantin Rahayu</h2>
@@ -393,6 +398,10 @@
   <div class="r-divider"></div>
   <div class="r-items" id="rItems"></div>
   <div class="r-divider"></div>
+  <div class="r-total">
+    <span>TOTAL BAYAR</span>
+    <span id="rTotalPrice"></span>
+  </div>
   <div id="rNotesBox" class="r-notes" style="display:none;">📝 <span id="rNotesText"></span></div>
   <div class="r-footer">
     Terima kasih atas pesanan Anda!<br>
@@ -462,6 +471,30 @@
   }
 
   // ==========================================
+  // FORMAT RUPIAH HELPER
+  // ==========================================
+  function formatRupiah(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/[^0-9]/g, '');
+    
+    // Format with dots separator
+    if (value !== '') {
+      value = parseInt(value).toLocaleString('id-ID');
+    }
+    
+    input.value = value;
+  }
+
+  function getRawPrice() {
+    const val = document.getElementById('orderPrice').value;
+    return val ? parseInt(val.replace(/\./g, '')) : 0;
+  }
+
+  function formatRupiahString(num) {
+    return 'Rp ' + num.toLocaleString('id-ID');
+  }
+
+  // ==========================================
   // CHECKOUT & RECEIPT GENERATION
   // ==========================================
   function openCheckout() {
@@ -471,6 +504,7 @@
     orderType = "Makan di Tempat";
     document.getElementById('orderNotes').value = '';
     document.getElementById('buyerName').value = '';
+    document.getElementById('orderPrice').value = '';
     useSambal = false;
     document.getElementById('sambalToggle').classList.remove('active');
   }
@@ -480,9 +514,12 @@
 
   async function processPayment() {
     const buyerName = document.getElementById('buyerName').value.trim();
-    if (!buyerName) { alert("Mohon isi nama pembeli terlebih dahulu!"); return; }
+    const rawPrice = getRawPrice();
 
-    const btn = document.querySelector('#checkoutModal .checkout-btn');
+    if (!buyerName) { alert("Mohon isi nama pembeli terlebih dahulu!"); return; }
+    if (rawPrice <= 0) { alert("Mohon isi total harga pembayaran!"); return; }
+
+    const btn = document.getElementById('processBtn');
     const originalText = btn.innerText;
     btn.innerText = "⏳ Membuat Struk...";
     btn.disabled = true;
@@ -495,6 +532,7 @@
     const ricePortion = document.querySelector('input[name="ricePortion"]:checked').value;
     const notes = document.getElementById('orderNotes').value.trim();
     const activeMenu = getActiveMenu();
+    const formattedPrice = formatRupiahString(rawPrice);
 
     // Fill Hidden Receipt Template
     document.getElementById('rDate').innerText = `${dateStr} • ${timeStr}`;
@@ -502,6 +540,7 @@
     document.getElementById('rBuyer').innerText = buyerName;
     document.getElementById('rType').innerText = orderType;
     document.getElementById('rRice').innerText = ricePortion;
+    document.getElementById('rTotalPrice').innerText = formattedPrice;
     
     let itemsHtml = '';
     let msgText = `*STRUK PESANAN KANTIN RAHAYU*\n${orderId}\n\n👤 *Nama:* ${buyerName}\n📋 *Tipe:* ${orderType}\n🍚 *Nasi:* ${ricePortion}\n🌶️ *Sambal:* ${useSambal ? 'Ya' : 'Tidak'}\n━━━━━━━━━━━━━━━━━\n`;
@@ -515,10 +554,13 @@
     }
     document.getElementById('rItems').innerHTML = itemsHtml;
     
+    // Add Price to Text Message
+    msgText += `━━━━━━━━━━━━━━━━━\n💰 *TOTAL BAYAR: ${formattedPrice}*\n`;
+
     if (notes) {
       document.getElementById('rNotesBox').style.display = 'block';
       document.getElementById('rNotesText').innerText = notes;
-      msgText += `━━━━━━━━━━━━━━━━━\n📝 *Catatan:* ${notes}\n`;
+      msgText += `📝 *Catatan:* ${notes}\n`;
     } else {
       document.getElementById('rNotesBox').style.display = 'none';
     }
@@ -532,7 +574,6 @@
         useCORS: true 
       });
       
-      // Convert to Blob and Download
       canvas.toBlob(function(blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -543,12 +584,10 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // 3. Open WhatsApp with Text
         setTimeout(() => {
           const phone = "6285189914887";
           window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msgText)}`, '_blank');
           
-          // Reset UI
           btn.innerText = originalText;
           btn.disabled = false;
           closeCheckout();
@@ -556,7 +595,7 @@
           renderCustomerMenu();
           updateCartUI();
           
-          alert("✅ Struk berhasil diunduh!\nSilakan lampirkan gambar struk di chat WhatsApp yang sudah terbuka.");
+          alert("✅ Struk berhasil diunduh!\nSilakan lampirkan gambar struk di chat WhatsApp.");
         }, 1000);
         
       }, 'image/jpeg', 0.95);

@@ -180,6 +180,19 @@
     font-size: 20px; color: var(--ink-light); cursor: pointer; display: flex; align-items: center; justify-content: center;
   }
 
+  /* Summary List in Modal */
+  .summary-list { 
+    margin-bottom: 24px; background: var(--bg); border-radius: var(--radius-md); padding: 16px; 
+    border: 1px dashed var(--line);
+  }
+  .summary-item { 
+    display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; 
+    padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05); 
+  }
+  .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .summary-item span:first-child { color: var(--ink); font-weight: 600; }
+  .summary-item span:last-child { font-weight: 800; color: var(--accent-dark); }
+
   /* Form Elements */
   .section-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.3px; }
   .input-field { 
@@ -316,6 +329,10 @@
         <h3 class="modal-title">Pembayaran & Konfirmasi</h3>
         <button class="close-modal" onclick="closeCheckout()">×</button>
       </div>
+
+      <!-- RINGKASAN PESANAN (DIKEMBALIKAN) -->
+      <span class="section-label">🛒 Ringkasan Pesanan</span>
+      <div class="summary-list" id="checkoutSummary"></div>
 
       <span class="section-label">👤 Identitas Pemesan</span>
       <input type="text" id="buyerName" class="input-field" placeholder="Nama Lengkap Pembeli..." style="margin-bottom: 20px;">
@@ -474,14 +491,10 @@
   // FORMAT RUPIAH HELPER
   // ==========================================
   function formatRupiah(input) {
-    // Remove non-digit characters
     let value = input.value.replace(/[^0-9]/g, '');
-    
-    // Format with dots separator
     if (value !== '') {
       value = parseInt(value).toLocaleString('id-ID');
     }
-    
     input.value = value;
   }
 
@@ -498,7 +511,19 @@
   // CHECKOUT & RECEIPT GENERATION
   // ==========================================
   function openCheckout() {
-    document.getElementById('checkoutModal').classList.add('open');
+    const modal = document.getElementById('checkoutModal');
+    const summary = document.getElementById('checkoutSummary');
+    const activeMenu = getActiveMenu();
+    
+    // Render Summary Items
+    let html = '';
+    for (const [id, qty] of Object.entries(cart)) {
+      const item = activeMenu.find(m => m.id == id);
+      if (item) html += `<div class="summary-item"><span>${item.name}</span><span>x${qty}</span></div>`;
+    }
+    summary.innerHTML = html;
+
+    modal.classList.add('open');
     document.querySelector('input[name="ricePortion"][value="1 Porsi"]').checked = true;
     document.querySelector('input[name="orderType"][value="Makan di Tempat"]').checked = true;
     orderType = "Makan di Tempat";

@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELSENTIAL — Menu & Guide MPASI Estetik</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== GLOBAL STYLES & MONOCHROME PALETTE ==================== */
+        :root {
+            --bg-primary: #FAFAFA;
+            --bg-surface: #FFFFFF;
+            --bg-subtle: #F4F4F5;
+            --bg-dark: #121212;
+            --text-main: #18181B;
+            --text-muted: #71717A;
+            --text-light: #A1A1AA;
+            --border-color: #E4E4E7;
+            --border-dark: #27272A;
+            --accent-black: #09090B;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-primary: #09090B;
+            --bg-surface: #121212;
+            --bg-subtle: #18181B;
+            --bg-dark: #FAFAFA;
+            --text-main: #F4F4F5;
+            --text-muted: #A1A1AA;
+            --text-light: #71717A;
+            --border-color: #27272A;
+            --border-dark: #E4E4E7;
+            --accent-black: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Syne', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background: none;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==================== NAVBAR ==================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250, 250, 250, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(9, 9, 11, 0.85);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .brand-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-black);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-black);
+            border-radius: 2px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-surface);
+            color: var(--text-main);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .btn-icon:hover {
+            border-color: var(--accent-black);
+            transform: translateY(-2px);
+        }
+
+        .badge-count {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-title span {
+            font-style: italic;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+        }
+
+        /* Search Bar & Instant Filter */
+        .search-container {
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            padding: 8px 12px 8px 24px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent-black);
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        .search-btn {
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            opacity: 0.88;
+            transform: scale(1.02);
+        }
+
+        .tag-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .tag-pill {
+            padding: 6px 14px;
+            border-radius: 100px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tag-pill:hover, .tag-pill.active {
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            border-color: var(--accent-black);
+        }
+
+        /* ==================== AGE FILTER TABS ==================== */
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .age-tabs-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .age-tab {
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            min-width: 140px;
+        }
+
+        .age-tab span {
+            font-size: 0.75rem;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .age-tab:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .age-tab.active {
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            border-color: var(--accent-black);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==================== RECIPE GRID ==================== */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        .recipe-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0,0,0,0.15);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 220px;
+            background-color: var(--bg-subtle);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-svg-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(105%);
+            transition: var(--transition);
+        }
+
+        .recipe-card:hover .card-svg-bg {
+            transform: scale(1.04);
+            filter: grayscale(80%) contrast(110%);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            color: #09090B;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        [data-theme="dark"] .card-badge {
+            background: rgba(18, 18, 18, 0.9);
+            color: #FAFAFA;
+        }
+
+        .btn-fav {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-main);
+        }
+
+        [data-theme="dark"] .btn-fav {
+            background: rgba(18, 18, 18, 0.9);
+        }
+
+        .btn-fav.active svg {
+            fill: #09090B;
+            stroke: #09090B;
+        }
+
+        [data-theme="dark"] .btn-fav.active svg {
+            fill: #FAFAFA;
+            stroke: #FAFAFA;
+        }
+
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .card-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nutrition-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-subtle);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-detail {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
+        }
+
+        .btn-detail:hover {
+            gap: 8px;
+        }
+
+        /* ==================== INTERACTIVE TEXTURE & GUIDE SECTION ==================== */
+        .guide-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            margin-bottom: 80px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .texture-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .texture-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .texture-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .texture-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--bg-primary);
+        }
+
+        .texture-card:hover, .texture-card.active {
+            border-color: var(--accent-black);
+            background: var(--bg-surface);
+            box-shadow: var(--shadow-md);
+        }
+
+        .texture-card.active {
+            border-width: 2px;
+        }
+
+        .texture-age {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .texture-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .texture-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Dynamic Texture Display Box */
+        .texture-display-box {
+            margin-top: 32px;
+            padding: 28px;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--accent-black);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .texture-icon-box {
+            font-size: 2rem;
+            background: var(--bg-surface);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .texture-info-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .texture-info-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .texture-bullets {
+            list-style-type: square;
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        /* ==================== MEAL PLANNER TABS ==================== */
+        .planner-section {
+            margin-bottom: 80px;
+        }
+
+        .days-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+        }
+
+        .day-btn {
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .day-btn:hover, .day-btn.active {
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            border-color: var(--accent-black);
+        }
+
+        .planner-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .planner-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .planner-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .meal-slot {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .meal-time-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meal-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .meal-ingredients {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ==================== MODAL RECIPE DETAILED VIEW ==================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            max-width: 760px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header-img {
+            height: 240px;
+            width: 100%;
+            background-color: var(--bg-subtle);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .btn-close-modal {
+            background: rgba(18, 18, 18, 0.9);
+            color: #FFF;
+        }
+
+        .btn-close-modal:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .modal-badge {
+            display: inline-block;
+            background: var(--bg-subtle);
+            color: var(--text-main);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .portion-scaler {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-subtle);
+            padding: 8px 16px;
+            border-radius: 100px;
+            width: fit-content;
+            margin-bottom: 24px;
+        }
+
+        .portion-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .scale-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .scale-btn.active {
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            border-color: var(--accent-black);
+        }
+
+        .modal-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 24px 0 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .ingredient-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .ingredient-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            background: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-black);
+            color: var(--bg-surface);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            padding: 60px 0 40px;
+            margin-top: 100px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .footer-heading {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Utility animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar">
+        <div class="container nav-wrapper">
+            <a href="#" class="brand-logo brand-font">
+                ELSENTIAL <span class="brand-dot"></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Beranda</a></li>
+                <li><a href="#menu-sec" class="nav-link">Koleksi Resep</a></li>
+                <li><a href="#tekstur-sec" class="nav-link">Panduan Tekstur</a></li>
+                <li><a href="#planner-sec" class="nav-link">Jadwal Mingguan</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-icon" id="theme-toggle" title="Ubah Tema (Dark/Light)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+                <button class="btn-icon" id="fav-drawer-toggle" title="Resep Favorit">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="badge-count" id="fav-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-badge">Estetik &bull; Nutrisi Murni &bull; Terukur</div>
+            <h1 class="hero-title">MPASI Sehat, Tumbuh Maksimal <span>dengan Sajian Elegan.</span></h1>
+            <p class="hero-subtitle">Panduan nutrisi Makanan Pendamping ASI (MPASI) terstruktur berbasis usia dengan tekstur tepat, kalkulator porsi interaktif, & panduan gizi harian si kecil.</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" placeholder="Cari resep (contoh: Daging Sapi, Puree, Salmon, Alpukat)...">
+                    <button class="search-btn" id="search-btn">Cari Menu</button>
+                </div>
+                <div class="tag-pills">
+                    <button class="tag-pill active" data-tag="all">Semua</button>
+                    <button class="tag-pill" data-tag="tinggi-besi">#TinggiZatBesi</button>
+                    <button class="tag-pill" data-tag="bb-booster">#BBBooster</button>
+                    <button class="tag-pill" data-tag="omega-3">#Omega3</button>
+                    <button class="tag-pill" data-tag="finger-food">#FingerFood</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MENU SECTION & AGE FILTERS ==================== -->
+    <section class="container" id="menu-sec" style="padding-top: 40px;">
+        <div class="section-header">
+            <h2 class="section-title">Eksplorasi Menu MPASI</h2>
+            <p class="section-desc">Pilih kelompok usia si kecil untuk menyesuaikan tekstur dan kebutuhan nutrisi</p>
+        </div>
+
+        <!-- Age Tabs -->
+        <div class="age-tabs-wrapper">
+            <button class="age-tab active" data-age="all">
+                Semua Usia
+                <span>Koleksi Lengkap</span>
+            </button>
+            <button class="age-tab" data-age="6-8">
+                6 - 8 Bulan
+                <span>Tekstur Halus / Puree</span>
+            </button>
+            <button class="age-tab" data-age="8-10">
+                8 - 10 Bulan
+                <span>Cincang Halus / Soft</span>
+            </button>
+            <button class="age-tab" data-age="10-12">
+                10 - 12 Bulan
+                <span>Cincang Kasar / Finger</span>
+            </button>
+            <button class="age-tab" data-age="12+">
+                12+ Bulan
+                <span>Menu Keluarga</span>
+            </button>
+        </div>
+
+        <!-- Recipe Grid -->
+        <div class="recipe-grid" id="recipe-grid">
+            <!-- Cards rendered dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- ==================== PANDUAN TEKSTUR INTERAKTIF ==================== -->
+    <section class="container" id="tekstur-sec">
+        <div class="section-header">
+            <h2 class="section-title">Panduan Tahapan Tekstur</h2>
+            <p class="section-desc">Klik pada tahapan usia untuk melihat rekomendasi konsistensi & kesiapan makan si kecil</p>
+        </div>
+
+        <div class="guide-section">
+            <div class="texture-selector">
+                <div class="texture-card active" onclick="selectTexture(0)">
+                    <div class="texture-age">Tahap 1 &bull; 6-8 Bulan</div>
+                    <div class="texture-name">Puree & Lumat</div>
+                    <div class="texture-desc">Lembut, saring halus, konsistensi cukup kental tanpa gumpalan.</div>
+                </div>
+                <div class="texture-card" onclick="selectTexture(1)">
+                    <div class="texture-age">Tahap 2 &bull; 8-10 Bulan</div>
+                    <div class="texture-name">Cincang Halus</div>
+                    <div class="texture-desc">Mashed dengan sedikit tekstur kecil untuk melatih koordinasi kunyah.</div>
+                </div>
+                <div class="texture-card" onclick="selectTexture(2)">
+                    <div class="texture-age">Tahap 3 &bull; 10-12 Bulan</div>
+                    <div class="texture-name">Cincang Kasar</div>
+                    <div class="texture-desc">Nasi tim, potong dadu kecil, siap belajar makan sendiri (Finger Food).</div>
+                </div>
+                <div class="texture-card" onclick="selectTexture(3)">
+                    <div class="texture-age">Tahap 4 &bull; 12+ Bulan</div>
+                    <div class="texture-name">Makanan Keluarga</div>
+                    <div class="texture-desc">Tekstur makanan orang dewasa dengan pengurangan kadar garam & gula.</div>
+                </div>
+            </div>
+
+            <!-- Dynamic Display Box -->
+            <div class="texture-display-box" id="texture-display">
+                <div class="texture-icon-box" id="texture-icon">&#129379;</div>
+                <div class="texture-info-content">
+                    <h4 id="texture-display-title">6–8 Bulan: Puree Halus Saring</h4>
+                    <p id="texture-display-desc">Pada tahap awal MPASI, refleks menelan bayi belum sempurna sepenuhnya. Makanan harus dihaluskan dan disaring agar aman dari risiko tersedak.</p>
+                    <ul class="texture-bullets" id="texture-bullets">
+                        <li>Frekuensi: 2–3 kali makan besar + 1–2 kali selingan per hari</li>
+                        <li>Porsi: 2–3 sendok makan dewasa per kali makan (bertahap naik hingga 125ml)</li>
+                        <li>Fokus Nutrisi: Zat besi utama dari protein hewani (daging sapi, hati ayam, salmon)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== JADWAL MEAL PLANNER MINGGUAN ==================== -->
+    <section class="container planner-section" id="planner-sec">
+        <div class="section-header">
+            <h2 class="section-title">Perencana Menu Mingguan</h2>
+            <p class="section-desc">Rekomendasi variasi menu harian seimbang untuk mencegah bayi pembosan (Picki-eater)</p>
+        </div>
+
+        <div class="days-nav" id="days-nav">
+            <button class="day-btn active" onclick="selectDay(0)">Senin</button>
+            <button class="day-btn" onclick="selectDay(1)">Selasa</button>
+            <button class="day-btn" onclick="selectDay(2)">Rabu</button>
+            <button class="day-btn" onclick="selectDay(3)">Kamis</button>
+            <button class="day-btn" onclick="selectDay(4)">Jumat</button>
+            <button class="day-btn" onclick="selectDay(5)">Sabtu</button>
+            <button class="day-btn" onclick="selectDay(6)">Minggu</button>
+        </div>
+
+        <div class="planner-card">
+            <div class="planner-grid" id="planner-grid-content">
+                <!-- Dynamic Content via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MODAL RECIPE DETAIL ==================== -->
+    <div class="modal-overlay" id="recipe-modal">
+        <div class="modal-container">
+            <button class="btn-close-modal" id="close-modal-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="modal-header-img" id="modal-img-area">
+                <!-- SVG Icon Visual -->
+            </div>
+            <div class="modal-body">
+                <span class="modal-badge" id="modal-age-badge">6-8 BULAN</span>
+                <h3 class="modal-title" id="modal-title">Nama Resep MPASI</h3>
+                
+                <!-- Interactive Portion Calculator -->
+                <div class="portion-scaler">
+                    <span class="portion-label">Skala Porsi:</span>
+                    <button class="scale-btn active" onclick="setScale(1)">1x</button>
+                    <button class="scale-btn" onclick="setScale(2)">2x</button>
+                    <button class="scale-btn" onclick="setScale(3)">3x</button>
+                </div>
+
+                <div class="modal-section-title">Bahan-Bahan Utama</div>
+                <ul class="ingredient-list" id="modal-ingredients">
+                    <!-- Dynamic -->
+                </ul>
+
+                <div class="modal-section-title">Langkah Pembuatan</div>
+                <ol class="step-list" id="modal-steps">
+                    <!-- Dynamic -->
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand brand-font">ELSENTIAL <span class="brand-dot"></span></div>
+                    <p class="footer-text">Platform panduan MPASI estetik modern. Menyajikan resep bergizi tinggi, aman, dan dirancang khusus untuk memenuhi standar nutrisi tumbuh kembang bayi.</p>
+                </div>
+                <div>
+                    <div class="footer-heading">Navigasi</div>
+                    <ul class="footer-links">
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#menu-sec">Resep MPASI</a></li>
+                        <li><a href="#tekstur-sec">Tahap Tekstur</a></li>
+                        <li><a href="#planner-sec">Jadwal Makan</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-heading">Catatan Medis</div>
+                    <p class="footer-text" style="font-size: 0.8rem;">Selalu konsultasikan pengenalan bahan makanan baru dengan Dokter Spesialis Anak (Sp.A) jika si kecil memiliki riwayat alergi dalam keluarga.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 ELSENTIAL MPASI Guide. All Rights Reserved.</div>
+                <div>Desain Monokrom Estetik &bull; Clean & Modern Interactivity</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT CODE ==================== -->
+    <script>
+        // Database Resep MPASI ELSENTIAL
+        const recipesData = [
+            {
+                id: 1,
+                title: "Puree Daging Sapi & Alpukat",
+                age: "6-8",
+                ageLabel: "6 - 8 Bulan",
+                prepTime: "25 Menit",
+                tag: "tinggi-besi",
+                nutrition: "Zat Besi & Lemak Sehat",
+                desc: "Kombinasi kaya zat besi dari tenderloin sapi dengan lemak sehat alami alpukat untuk mencegah anemia pada awal MPASI.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 12h8"/></svg>`,
+                ingredients: [
+                    { amount: 30, unit: "gram", name: "Daging Sapi Giling (Tenderloin)" },
+                    { amount: 2, unit: "sdm", name: "Alpukat Mentega Halus" },
+                    { amount: 1, unit: "sdm", name: "Nasi Putih Organik" },
+                    { amount: 1, unit: "sdt", name: "Unsalted Butter (UB)" },
+                    { amount: 100, unit: "ml", name: "Kaldu Sapi Alami" }
+                ],
+                steps: [
+                    "Rebus daging sapi giling dengan kaldu sapi alami hingga empuk dan matang sempurna.",
+                    "Masukan nasi putih organik ke dalam rebusan sebentar hingga melunak.",
+                    "Blender atau saring halus campuran daging dan nasi menggunakan saringan kawat stainless.",
+                    "Campurkan alpukat mentega yang telah dihaluskan dan aduk dengan Unsalted Butter selagi hangat.",
+                    "Sajikan dengan suhu suam-suam kuku."
+                ]
+            },
+            {
+                id: 2,
+                title: "Bubur Tim Hati Ayam & Bayam",
+                age: "6-8",
+                ageLabel: "6 - 8 Bulan",
+                prepTime: "20 Menit",
+                tag: "tinggi-besi",
+                nutrition: "Heme Iron & Vitamin A",
+                desc: "Hati ayam merupakan sumber zat besi heme paling efektif diserap tubuh bayi, dikombinasikan dengan bayam segar.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+                ingredients: [
+                    { amount: 30, unit: "gram", name: "Hati Ayam Kampung Segar" },
+                    { amount: 1, unit: "sdm", name: "Bayam Hijau Cincang" },
+                    { amount: 2, unit: "sdm", name: "Beras Putih Organik" },
+                    { amount: 1, unit: "sdt", name: "Minyak Kelapa Murni (EVCO)" },
+                    { amount: 150, unit: "ml", name: "Air / Kaldu Ayam" }
+                ],
+                steps: [
+                    "Cuci bersih hati ayam dengan perasan jeruk nipis untuk mengurangi bau amis.",
+                    "Rebus beras putih dan hati ayam bersama kaldu hingga menjadi bubur yang sangat lembek.",
+                    "Masukkan bayam hijau di 3 menit terakhir sebelum api dimatikan.",
+                    "Saring menggunakan saringan kawat stainless steel hingga bertekstur lembut tanpa gumpalan.",
+                    "Tambahkan 1 sdt Extra Virgin Coconut Oil (EVCO) sebelum disajikan."
+                ]
+            },
+            {
+                id: 3,
+                title: "Puree Salmon & Labu Kuning",
+                age: "6-8",
+                ageLabel: "6 - 8 Bulan",
+                prepTime: "15 Menit",
+                tag: "omega-3",
+                nutrition: "Omega-3, DHA & Beta-Karoten",
+                desc: "Ikan salmon kaya akan asam lemak DHA yang sangat dibutuhkan untuk perkembangan otak dan syaraf si kecil.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><path d="M6 12c0 4 3 8 8 8s8-4 8-8-4-8-8-8-8 4-8 8z"/><path d="M2 12h4"/></svg>`,
+                ingredients: [
+                    { amount: 35, unit: "gram", name: "Fillet Salmon Norwegia" },
+                    { amount: 40, unit: "gram", name: "Labu Kuning (Kukus)" },
+                    { amount: 1, unit: "sdt", name: "Keju Belcube Khusus Bayi" },
+                    { amount: 1, unit: "sdt", name: "Olive Oil / EVO" }
+                ],
+                steps: [
+                    "Kukus fillet salmon dan labu kuning selama 12-15 menit hingga empuk.",
+                    "Pastikan fillet salmon bebas dari duri sekecil apapun.",
+                    "Lumatkan labu kuning dan salmon menggunakan garpu atau saring halus.",
+                    "Aduk rata bersama keju Belcube cair dan minyak zaitun."
+                ]
+            },
+            {
+                id: 4,
+                title: "Oatmeal Pisang & Chia Seed",
+                age: "8-10",
+                ageLabel: "8 - 10 Bulan",
+                prepTime: "10 Menit",
+                tag: "bb-booster",
+                nutrition: "Serat Alami & Energi",
+                desc: "Menu sarapan bernutrisi tinggi dan praktis untuk melatih tekstur cincang halus serta menjaga pencernaan.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><path d="M12 3v18M3 12h18"/></svg>`,
+                ingredients: [
+                    { amount: 3, unit: "sdm", name: "Rolled Oats Halus" },
+                    { amount: 0.5, unit: "buah", name: "Pisang Cavendish Matang" },
+                    { amount: 100, unit: "ml", name: "ASI / Formula / Air Matang" },
+                    { amount: 0.5, unit: "sdt", name: "Chia Seeds (Rendam Air)" }
+                ],
+                steps: [
+                    "Masak rolled oats dengan air atau ASI dengan api kecil selama 5 menit hingga mengental.",
+                    "Lumatkan pisang cavendish menggunakan garpu (biarkan ada sedikit tekstur).",
+                    "Campurkan oats hangat dengan lumatan pisang dan taburkan chia seeds yang telah melunak."
+                ]
+            },
+            {
+                id: 5,
+                title: "Tim Salmon Brokoli & Keu",
+                age: "8-10",
+                ageLabel: "8 - 10 Bulan",
+                prepTime: "30 Menit",
+                tag: "bb-booster",
+                nutrition: "Kalsium, Protein & DHA",
+                desc: "Nasi tim lembut dengan potongan salmon cincang dan keju gurih alami favorit anak-anak.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`,
+                ingredients: [
+                    { amount: 40, unit: "gram", name: "Fillet Salmon Cincang" },
+                    { amount: 3, unit: "sdm", name: "Nasi Tim Soft" },
+                    { amount: 2, unit: "kuntum", name: "Brokoli Cincang Halus" },
+                    { amount: 1, unit: "lembar", name: "Keju Slice Low-Sodium" },
+                    { amount: 150, unit: "ml", name: "Kaldu Ayam Kampung" }
+                ],
+                steps: [
+                    "Tumis salmon cincang dengan sedikit butter hingga berubah warna.",
+                    "Campurkan nasi, kaldu ayam, dan brokoli cincang ke dalam wadah tahan panas.",
+                    "Kukus selama 20 menit hingga nasi menjadi sangat lembut.",
+                    "Letakkan keju di atas tim selagi panas hingga meleleh sempurna."
+                ]
+            },
+            {
+                id: 6,
+                title: "Sup Bola Daging & Kentang",
+                age: "10-12",
+                ageLabel: "10 - 12 Bulan",
+                prepTime: "35 Menit",
+                tag: "finger-food",
+                nutrition: "Protein & Karbohidrat Kompleks",
+                desc: "Bola daging empuk dengan ukuran pas untuk melatih koordinasi genggaman tangan (finger food).",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`,
+                ingredients: [
+                    { amount: 50, unit: "gram", name: "Daging Sapi Giling Halus" },
+                    { amount: 1, unit: "butir", name: "Telur Puyuh (Pengikat)" },
+                    { amount: 1, unit: "buah", name: "Kentang Potong Dadu" },
+                    { amount: 0.5, unit: "batang", name: "Wortel Potong Dadu Kecil" },
+                    { amount: 250, unit: "ml", name: "Kaldu Daging Sapi" }
+                ],
+                steps: [
+                    "Campur daging giling dan telur puyuh, bentuk menjadi bola-bola kecil ukuran gigitan bayi.",
+                    "Didihkan kaldu sapi, masukkan bola daging hingga mengapung.",
+                    "Masukkan kentang dan wortel potong dadu, masak dengan api sedang hingga empuk.",
+                    "Sajikan hangat bersama taburan seledri cincang halus."
+                ]
+            },
+            {
+                id: 7,
+                title: "Pancake Ubi Ungu & Telur Puyuh",
+                age: "12+",
+                ageLabel: "12+ Bulan",
+                prepTime: "20 Menit",
+                tag: "finger-food",
+                nutrition: "Antioksidan & Energi Tinggi",
+                desc: "Camilan bernutrisi tinggi tanpa gula buatan, manis alami dari ubi ungu kaya antioksidan.",
+                svgIcon: `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#27272A" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>`,
+                ingredients: [
+                    { amount: 60, unit: "gram", name: "Ubi Ungu Kukus Lumat" },
+                    { amount: 2, unit: "butir", name: "Telur Puyuh / 1 Telur Ayam" },
+                    { amount: 2, unit: "sdm", name: "Tepung Oat / Terigu" },
+                    { amount: 1, unit: "sdt", name: "Unsalted Butter untuk Mengoles" }
+                ],
+                steps: [
+                    "Campur ubi ungu lumat, telur, dan tepung oat hingga menjadi adonan yang kental.",
+                    "Panaskan teflon anti lengket, olesi sedikit unsalted butter.",
+                    "Tuang 1 sendok makan adonan, masak dengan api kecil hingga kedua sisi matang kecokelatan.",
+                    "Potong-potong sesuai ukuran genggaman anak."
+                ]
+            }
+        ];
+
+        // Meal Planner Data (Senin - Minggu)
+        const weeklyPlan = [
+            // Senin
+            [
+                { time: "Makan Pagi (07:00)", title: "Puree Daging Sapi & Alpukat", desc: "Zat besi tinggi untuk memulai hari" },
+                { time: "Selingan (10:00)", title: "Puree Buah Naga & Keju", desc: "Kaya vitamin C & serat" },
+                { time: "Makan Siang (12:00)", title: "Bubur Tim Hati Ayam & Bayam", desc: "Heme iron maksimal" },
+                { time: "Makan Malam (17:30)", title: "Puree Salmon & Labu Kuning", desc: "DHA untuk tidur nyenyak" }
+            ],
+            // Selasa
+            [
+                { time: "Makan Pagi (07:00)", title: "Oatmeal Pisang Chia", desc: "Energi & pencernaan lancar" },
+                { time: "Selingan (10:00)", title: "Puree Alpukat & ASI", desc: "Lemak baik booster BB" },
+                { time: "Makan Siang (12:00)", title: "Puree Daging Sapi & Brokoli", desc: "Kalsium & zat besi" },
+                { time: "Makan Malam (17:30)", title: "Tim Salmon Keju", desc: "Protein hewani lengkap" }
+            ],
+            // Rabu
+            [
+                { time: "Makan Pagi (07:00)", title: "Bubur Tim Hati Ayam", desc: "Penyerapan zat besi optimal" },
+                { time: "Selingan (10:00)", title: "Pancake Ubi Ungu", desc: "Camilan finger food" },
+                { time: "Makan Siang (12:00)", title: "Puree Salmon & Labu", desc: "Omega 3 & Beta karoten" },
+                { time: "Makan Malam (17:30)", title: "Sup Bola Daging Kentang", desc: "Karbohidrat kompleks" }
+            ],
+            // Kamis
+            [
+                { time: "Makan Pagi (07:00)", title: "Puree Daging Sapi Alpukat", desc: "Lemak sehat & zat besi" },
+                { time: "Selingan (10:00)", title: "Puree Pear Saring", desc: "Pencernaan seimbang" },
+                { time: "Makan Siang (12:00)", title: "Tim Salmon Brokoli", desc: "Kalsium & DHA" },
+                { time: "Makan Malam (17:30)", title: "Bubur Tim Hati Ayam", desc: "Optimalisasi hemoglobin" }
+            ],
+            // Jumat
+            [
+                { time: "Makan Pagi (07:00)", title: "Oatmeal Pisang & Butter", desc: "Sarapan lembut & hangat" },
+                { time: "Selingan (10:00)", title: "Puree Mangga Manis Saring", desc: "Vitamin C alami" },
+                { time: "Makan Siang (12:00)", title: "Sup Bola Daging Sapi", desc: "Latihan mengunyah" },
+                { time: "Makan Malam (17:30)", title: "Puree Salmon Labu Kuning", desc: "Nutrisi otak" }
+            ],
+            // Sabtu
+            [
+                { time: "Makan Pagi (07:00)", title: "Pancake Ubi Ungu", desc: "Sarapan ceria akhir pekan" },
+                { time: "Selingan (10:00)", title: "Puree Alpukat Keju", desc: "Lemak sehat tambahan" },
+                { time: "Makan Siang (12:00)", title: "Tim Salmon Brokoli", desc: "Menu favorit si kecil" },
+                { time: "Makan Malam (17:30)", title: "Bubur Tim Hati Ayam", desc: "Asupan zat besi tinggi" }
+            ],
+            // Minggu
+            [
+                { time: "Makan Pagi (07:00)", title: "Puree Daging Sapi & Alpukat", desc: "Nutrisi lengkap minggu pagi" },
+                { time: "Selingan (10:00)", title: "Puree Apple Steam", desc: "Serat lembut" },
+                { time: "Makan Siang (12:00)", title: "Sup Bola Daging Kentang", desc: "Finger food melatih motorik" },
+                { time: "Makan Malam (17:30)", title: "Tim Salmon Keju", desc: "Penutup minggu bergizi" }
+            ]
+        ];
+
+        // State Management
+        let favorites = JSON.parse(localStorage.getItem('elsential_favs')) || [];
+        let activeAgeFilter = 'all';
+        let activeTagFilter = 'all';
+        let searchQuery = '';
+        let currentModalRecipe = null;
+        let currentScale = 1;
+
+        // Render Functions
+        function renderRecipes() {
+            const grid = document.getElementById('recipe-grid');
+            grid.innerHTML = '';
+
+            const filtered = recipesData.filter(item => {
+                const matchAge = activeAgeFilter === 'all' || item.age === activeAgeFilter;
+                const matchTag = activeTagFilter === 'all' || item.tag === activeTagFilter;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                    item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchAge && matchTag && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-muted);">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 12px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <p style="font-size: 1.1rem; font-weight: 600;">Tidak ada resep yang sesuai kata kunci/filter.</p>
+                        <p style="font-size: 0.9rem;">Coba gunakan kata kunci lain atau reset filter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isFav = favorites.includes(item.id);
+                const card = document.createElement('div');
+                card.className = 'recipe-card animate-fade';
+                card.innerHTML = `
+                    <div class="card-img-wrapper">
+                        ${item.svgIcon}
+                        <span class="card-badge">${item.ageLabel}</span>
+                        <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${item.id}, event)" title="Simpan Resep">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="card-meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                ${item.prepTime}
+                            </span>
+                        </div>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-desc">${item.desc}</p>
+                        <div class="card-footer">
+                            <span class="nutrition-tag">${item.nutrition}</span>
+                            <button class="btn-detail" onclick="openModal(${item.id})">
+                                Lihat Resep &rarr;
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Favorites Functionality
+        function toggleFav(id, e) {
+            e.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('elsential_favs', JSON.stringify(favorites));
+            document.getElementById('fav-count').textContent = favorites.length;
+            renderRecipes();
+        }
+
+        // Texture Guide Display Data
+        const textureGuides = [
+            {
+                title: "6–8 Bulan: Puree Halus Saring",
+                desc: "Pada tahap awal MPASI, refleks menelan bayi belum sempurna sepenuhnya. Makanan harus dihaluskan dan disaring agar aman dari risiko tersedak.",
+                icon: "&#129379;",
+                bullets: [
+                    "Frekuensi: 2–3 kali makan besar + 1–2 kali selingan per hari",
+                    "Porsi: 2–3 sendok makan dewasa per kali makan (bertahap naik hingga 125ml)",
+                    "Fokus Nutrisi: Zat besi utama dari protein hewani (daging sapi, hati ayam, salmon)"
+                ]
+            },
+            {
+                title: "8–10 Bulan: Cincang Halus (Mashed / Soft Mince)",
+                desc: "Bayi mulai belajar mengunyah menggunakan gusi. Makanan tidak perlu disaring lagi, cukup dilumatkan garpu atau cincang halus.",
+                icon: "&#129382;",
+                bullets: [
+                    "Frekuensi: 3 kali makan besar + 2 kali selingan per hari",
+                    "Porsi: 1/2 mangkuk ukuran 250ml (sekitar 125ml)",
+                    "Fokus Nutrisi: Variasi protein, sayuran berdaging lembut, dan lemak tambahan"
+                ]
+            },
+            {
+                title: "10–12 Bulan: Cincang Kasar & Finger Food",
+                desc: "Melatih kemandirian anak dengan makanan yang bisa digenggam (finger food) serta tekstur nasi tim cincang kasar.",
+                icon: "&#129367;",
+                bullets: [
+                    "Frekuensi: 3 kali makan besar + 2 kali selingan per hari",
+                    "Porsi: 1/2 hingga 3/4 mangkuk ukuran 250ml",
+                    "Fokus Nutrisi: Eksplorasi beragam rasa alami & koordinasi motorik halus"
+                ]
+            },
+            {
+                title: "12+ Bulan: Makanan Keluarga (Family Table Food)",
+                desc: "Anak sudah bisa mengonsumsi makanan yang sama dengan anggota keluarga lainnya, dengan pengawasan kadar garam dan gula.",
+                icon: "&#129367;",
+                bullets: [
+                    "Frekuensi: 3 kali makan besar + 2 kali selingan menu keluarga",
+                    "Porsi: 3/4 hingga 1 mangkuk penuh ukuran 250ml",
+                    "Fokus Nutrisi: Gizi seimbang sesuai panduan piring makanku"
+                ]
+            }
+        ];
+
+        function selectTexture(index) {
+            const cards = document.querySelectorAll('.texture-card');
+            cards.forEach((c, idx) => {
+                c.classList.toggle('active', idx === index);
+            });
+
+            const guide = textureGuides[index];
+            document.getElementById('texture-icon').innerHTML = guide.icon;
+            document.getElementById('texture-display-title').textContent = guide.title;
+            document.getElementById('texture-display-desc').textContent = guide.desc;
+            
+            const bulletsUl = document.getElementById('texture-bullets');
+            bulletsUl.innerHTML = guide.bullets.map(b => `<li>${b}</li>`).join('');
+        }
+
+        // Meal Planner Functions
+        function selectDay(dayIndex) {
+            const buttons = document.querySelectorAll('.day-btn');
+            buttons.forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === dayIndex);
+            });
+
+            const dayData = weeklyPlan[dayIndex];
+            const plannerGrid = document.getElementById('planner-grid-content');
+            plannerGrid.innerHTML = '';
+
+            dayData.forEach(slot => {
+                const item = document.createElement('div');
+                item.className = 'meal-slot animate-fade';
+                item.innerHTML = `
+                    <span class="meal-time-tag">${slot.time}</span>
+                    <h4 class="meal-title">${slot.title}</h4>
+                    <p class="meal-ingredients">${slot.desc}</p>
+                `;
+                plannerGrid.appendChild(item);
+            });
+        }
+
+        // Recipe Modal Functions
+        function openModal(id) {
+            const recipe = recipesData.find(r => r.id === id);
+            if (!recipe) return;
+
+            currentModalRecipe = recipe;
+            currentScale = 1;
+
+            document.getElementById('modal-img-area').innerHTML = recipe.svgIcon;
+            document.getElementById('modal-age-badge').textContent = recipe.ageLabel;
+            document.getElementById('modal-title').textContent = recipe.title;
+
+            updateIngredientsList();
+
+            const stepsOl = document.getElementById('modal-steps');
+            stepsOl.innerHTML = recipe.steps.map(s => `<li class="step-item">${s}</li>`).join('');
+
+            // Reset Scale Buttons
+            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.scale-btn')[0].classList.add('active');
+
+            document.getElementById('recipe-modal').classList.add('active');
+        }
+
+        function setScale(scale) {
+            currentScale = scale;
+            document.querySelectorAll('.scale-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === (scale - 1));
+            });
+            updateIngredientsList();
+        }
+
+        function updateIngredientsList() {
+            if (!currentModalRecipe) return;
+            const ingUl = document.getElementById('modal-ingredients');
+            ingUl.innerHTML = currentModalRecipe.ingredients.map(ing => {
+                const scaledAmount = (ing.amount * currentScale).toLocaleString('id-ID');
+                return `
+                    <li class="ingredient-item">
+                        <strong>${scaledAmount} ${ing.unit}</strong> ${ing.name}
+                    </li>
+                `;
+            }).join('');
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial Renders
+            document.getElementById('fav-count').textContent = favorites.length;
+            renderRecipes();
+            selectDay(0);
+
+            // Age Filter Tabs
+            document.querySelectorAll('.age-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.age-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    activeAgeFilter = tab.dataset.age;
+                    renderRecipes();
+                });
+            });
+
+            // Tag Pills
+            document.querySelectorAll('.tag-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    activeTagFilter = pill.dataset.tag;
+                    renderRecipes();
+                });
+            });
+
+            // Search Input
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderRecipes();
+            });
+
+            // Dark Mode Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            });
+
+            // Modal Close
+            document.getElementById('close-modal-btn').addEventListener('click', () => {
+                document.getElementById('recipe-modal').classList.remove('active');
+            });
+
+            document.getElementById('recipe-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('recipe-modal')) {
+                    document.getElementById('recipe-modal').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
